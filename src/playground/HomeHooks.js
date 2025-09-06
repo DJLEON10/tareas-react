@@ -71,6 +71,297 @@ function HomeHooks() {
               <td className="border border-gray-300 px-4 py-2">
                 React Hook- Referencias
               </td>
+              
+            </tr>
+
+            
+            <tr className="odd:bg-white even:bg-gray-50">
+              <td className="border border-gray-300 px-4 py-2">
+                <Link
+                  to="/useref"
+                  className="text-[#0d4f4c] font-semibold hover:underline  "
+                >
+                  UseRef
+                </Link>
+              </td>
+              <td className="border border-gray-300 px-4 py-2">
+                Hook de React que permite manejar y actualizar el estado en
+                componentes sin hacer el cambio en tiempo real 
+              </td>
+              <td className="border border-gray-300 px-4 py-2">
+                React Hook- Referencias
+              </td>
+              
+            </tr>
+            <tr className="odd:bg-white even:bg-gray-50">
+              <td className="border border-gray-300 px-4 py-2">
+                <Link
+                  to="/useref"
+                  className="text-[#0d4f4c] font-semibold hover:underline  "
+                >
+                  UseRef
+                </Link>
+              </td>
+              <td className="border border-gray-300 px-4 py-2">
+                Hook de React que permite manejar y actualizar el estado en
+                componentes sin hacer el cambio en tiempo real 
+              </td>
+              <td className="border border-gray-300 px-4 py-2">
+                React Hook- Referencias
+              </td>
+              
+            </tr>
+            <tr className="odd:bg-white even:bg-gray-50">
+              <td className="border border-gray-300 px-4 py-2">
+                <Link
+                  to="/useref"
+                  className="text-[#0d4f4c] font-semibold hover:underline  "
+                >
+                  UseRef
+                </Link>
+              </td>
+              <td className="border border-gray-300 px-4 py-2">
+                Hook de React que permite manejar y actualizar el estado en
+                componentes sin hacer el cambio en tiempo real 
+              </td>
+              <td className="border border-gray-300 px-4 py-2">
+                React Hook- Referencias
+              </td>
+              
+            </tr>
+            <tr className="odd:bg-white even:bg-gray-50">
+              <td className="border border-gray-300 px-4 py-2">
+                <Link
+                  to="/useref"
+                  className="text-[#0d4f4c] font-semibold hover:underline  "
+                >
+                  UseRef
+                </Link>
+              </td>
+              <td className="border border-gray-300 px-4 py-2">
+                Hook de React que permite manejar y actualizar el estado en
+                componentes sin hacer el cambio en tiempo real 
+              </td>
+              <td className="border border-gray-300 px-4 py-2">
+                React Hook- Referencias
+              </td>
+              
+            </tr>
+            <tr className="odd:bg-white even:bg-gray-50">
+              <td className="border border-gray-300 px-4 py-2">
+                <Link
+                  to="/useref"
+                  className="text-[#0d4f4c] font-semibold hover:underline  "
+                >
+                  UseRef
+                </Link>
+              </td>
+              <td className="border border-gray-300 px-4 py-2">
+                Hook de React que permite manejar y actualizar el estado en
+                componentes sin hacer el cambio en tiempo real 
+              </td>
+              <td className="border border-gray-300 px-4 py-2">
+                React Hook- Referencias
+              </td>
+              
+            </tr>
+            <tr className="odd:bg-white even:bg-gray-50">
+              <td className="border border-gray-300 px-4 py-2">
+                <Link
+                  to="/useref"
+                  className="text-[#0d4f4c] font-semibold hover:underline  "
+                >
+                  UseRef
+                </Link>
+              </td>
+              <td className="border border-gray-300 px-4 py-2">
+                Hook de React que permite manejar y actualizar el estado en
+                componentes sin hacer el cambio en tiempo real 
+              </td>
+              <td className="border border-gray-300 px-4 py-2">
+                React Hook- Referencias
+              </td>
+              
+            </tr>
+            <tr className="odd:bg-white even:bg-gray-50">
+              <td className="border border-gray-300 px-4 py-2">
+                <Link
+                  to="/useref"
+                  className="text-[#0d4f4c] font-semibold hover:underline  "
+                >
+                  UseRef
+                </Link>
+              </td>
+              <td className="border border-gray-300 px-4 py-2">
+                Hook de React que permite manejar y actualizar el estado en
+                componentes sin hacer el cambio en tiempo real 
+              </td>
+              <td className="border border-gray-300 px-4 py-2">
+                React Hook- Referencias
+              </td>
+              
+            </tr>
+            <tr className="odd:bg-white even:bg-gray-50">
+              <td className="border border-gray-300 px-4 py-2">
+                <Link
+                  to="/useref"
+                  className="text-[#0d4f4c] font-semibold hover:underline  "
+                >
+                  UseRef
+                </Link>
+              </td>
+              <td className="border border-gray-300 px-4 py-2">
+                Hook de React que permite manejar y actualizar el estado en
+                componentes sin hacer el cambio en tiempo real 
+              </td>
+              <td className="border border-gray-300 px-4 py-2">
+                React Hook- Referencias
+              </td>
+              
+            </tr>
+            <tr className="odd:bg-white even:bg-gray-50">
+              <td className="border border-gray-300 px-4 py-2">
+                <Link
+                  to="/useref"
+                  className="text-[#0d4f4c] font-semibold hover:underline  "
+                >
+                  UseRef
+                </Link>
+              </td>
+              <td className="border border-gray-300 px-4 py-2">
+                Hook de React que permite manejar y actualizar el estado en
+                componentes sin hacer el cambio en tiempo real 
+              </td>
+              <td className="border border-gray-300 px-4 py-2">
+                React Hook- Referencias
+              </td>
+              
+            </tr>
+            <tr className="odd:bg-white even:bg-gray-50">
+              <td className="border border-gray-300 px-4 py-2">
+                <Link
+                  to="/useref"
+                  className="text-[#0d4f4c] font-semibold hover:underline  "
+                >
+                  UseRef
+                </Link>
+              </td>
+              <td className="border border-gray-300 px-4 py-2">
+                Hook de React que permite manejar y actualizar el estado en
+                componentes sin hacer el cambio en tiempo real 
+              </td>
+              <td className="border border-gray-300 px-4 py-2">
+                React Hook- Referencias
+              </td>
+              
+            </tr>
+            <tr className="odd:bg-white even:bg-gray-50">
+              <td className="border border-gray-300 px-4 py-2">
+                <Link
+                  to="/useref"
+                  className="text-[#0d4f4c] font-semibold hover:underline  "
+                >
+                  UseRef
+                </Link>
+              </td>
+              <td className="border border-gray-300 px-4 py-2">
+                Hook de React que permite manejar y actualizar el estado en
+                componentes sin hacer el cambio en tiempo real 
+              </td>
+              <td className="border border-gray-300 px-4 py-2">
+                React Hook- Referencias
+              </td>
+              
+            </tr>
+            <tr className="odd:bg-white even:bg-gray-50">
+              <td className="border border-gray-300 px-4 py-2">
+                <Link
+                  to="/useref"
+                  className="text-[#0d4f4c] font-semibold hover:underline  "
+                >
+                  UseRef
+                </Link>
+              </td>
+              <td className="border border-gray-300 px-4 py-2">
+                Hook de React que permite manejar y actualizar el estado en
+                componentes sin hacer el cambio en tiempo real 
+              </td>
+              <td className="border border-gray-300 px-4 py-2">
+                React Hook- Referencias
+              </td>
+              
+            </tr>
+            <tr className="odd:bg-white even:bg-gray-50">
+              <td className="border border-gray-300 px-4 py-2">
+                <Link
+                  to="/useref"
+                  className="text-[#0d4f4c] font-semibold hover:underline  "
+                >
+                  UseRef
+                </Link>
+              </td>
+              <td className="border border-gray-300 px-4 py-2">
+                Hook de React que permite manejar y actualizar el estado en
+                componentes sin hacer el cambio en tiempo real 
+              </td>
+              <td className="border border-gray-300 px-4 py-2">
+                React Hook- Referencias
+              </td>
+              
+            </tr>
+            <tr className="odd:bg-white even:bg-gray-50">
+              <td className="border border-gray-300 px-4 py-2">
+                <Link
+                  to="/useref"
+                  className="text-[#0d4f4c] font-semibold hover:underline  "
+                >
+                  UseRef
+                </Link>
+              </td>
+              <td className="border border-gray-300 px-4 py-2">
+                Hook de React que permite manejar y actualizar el estado en
+                componentes sin hacer el cambio en tiempo real 
+              </td>
+              <td className="border border-gray-300 px-4 py-2">
+                React Hook- Referencias
+              </td>
+              
+            </tr>
+            <tr className="odd:bg-white even:bg-gray-50">
+              <td className="border border-gray-300 px-4 py-2">
+                <Link
+                  to="/useref"
+                  className="text-[#0d4f4c] font-semibold hover:underline  "
+                >
+                  UseRef
+                </Link>
+              </td>
+              <td className="border border-gray-300 px-4 py-2">
+                Hook de React que permite manejar y actualizar el estado en
+                componentes sin hacer el cambio en tiempo real 
+              </td>
+              <td className="border border-gray-300 px-4 py-2">
+                React Hook- Referencias
+              </td>
+              
+            </tr>
+            <tr className="odd:bg-white even:bg-gray-50">
+              <td className="border border-gray-300 px-4 py-2">
+                <Link
+                  to="/useref"
+                  className="text-[#0d4f4c] font-semibold hover:underline  "
+                >
+                  UseRef
+                </Link>
+              </td>
+              <td className="border border-gray-300 px-4 py-2">
+                Hook de React que permite manejar y actualizar el estado en
+                componentes sin hacer el cambio en tiempo real 
+              </td>
+              <td className="border border-gray-300 px-4 py-2">
+                React Hook- Referencias
+              </td>
+              
             </tr>
           </tbody>
         </table>
