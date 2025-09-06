@@ -130,7 +130,17 @@ export default function Register() {
             Inicia sesión
           </Link>
         </p>
-      </div>
+
+
+        <p className="text-center mt-4 text-sm text-gray-600">
+          ir a HomeHooks{" "}
+          <Link
+            to="/home"
+            className="text-[#0d4f4c] font-semibold hover:underline  "
+          >
+            home
+          </Link>
+        </p>      </div>
     </div>
   );
 }
