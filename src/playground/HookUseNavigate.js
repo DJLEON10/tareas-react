@@ -1,4 +1,4 @@
-import React from "react"; // ✔ este sí
+import React from "react"; // ✔️ este sí
 import { Link, useNavigate } from "react-router-dom";
 
 function HookUseNavigate() {
