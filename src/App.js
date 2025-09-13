@@ -6,6 +6,26 @@ import HomeHooks from "./playground/HomeHooks";
 import "./App.css";
 import HookUseNavigate from "./playground/HookUseNavigate";
 import HookUseRef from "./playground/HookUseRef";
+import HookUseCallback from "./playground/HookUseCallback";
+import HookUseDeferredValue from "./playground/HookUseDeferredValue";
+import HookUseEffect from "./playground/HookUseEffect";
+import HookUseTransition from "./playground/HookUseTransition";
+import HookUseReducer from "./playground/HookUseReducer";
+import HookUseMemo from "./playground/HookUseMemo";
+import HookUseLayoutEffect from "./playground/HookUseLayoutEffect";
+import HookUseImperativeHandle from "./playground/HookUseImperativeHandle";
+import HookUseDebugValue from "./playground/HookUseDebugValue";
+import HookUseOnlineStatus from "./playground/HookUseOnlineStatus";
+import HookUseInsertionEffect from "./playground/HookUseInsertionEffect";
+import HookUseContext from "./playground/HookUseContext";
+import HookUseSyncExternalStore from "./playground/HookUseSyncExternalStore";
+import HookUseId from "./playground/HookUseId";
+import HookUseOptimistic from "./playground/HookUseOptimistic";
+import HookUseFormStatus from "./playground/HookUseFormStatus";
+import HookUseActionState from "./playground/HookUseActionState";
+
+
+
 
 function App() {
   return (
@@ -16,27 +36,25 @@ function App() {
         <Route path="/home" element={<HomeHooks />}></Route>
         <Route path="/useState" element={<HookUseState />}></Route>
         <Route path="/useNavigate" element={<HookUseNavigate />}></Route>
-        <Route path="/useDebug" element={<HookUseDebug />}></Route>
-        <Route path="/usereduce" element={<HookUseReduce />}></Route>
         <Route path="/useref" element={<HookUseRef />}></Route>
-        <Route path="/useimperativehandle" element={<HookUseImperatibeHandle />}></Route>
+        <Route path="/useDebug" element={<HookUseDebugValue />}></Route>
+        <Route path="/usereduce" element={<HookUseReducer />}></Route>
+        <Route path="/useimperativehandle" element={<HookUseImperativeHandle />}></Route>
         <Route path="/usememo" element={<HookUseMemo />}></Route>
         <Route path="/usecallback" element={<HookUseCallback />}></Route>
-        <Route path="/usetransmition" element={<HookUseTransmition />}></Route>
+        <Route path="/usetransmition" element={<HookUseTransition />}></Route>
         <Route path="/usedeferredvalue" element={<HookUseDeferredValue />}></Route>
         <Route path="/useeffect" element={<HookUseEffect />}></Route>
         <Route path="/uselayouteffect" element={<HookUseLayoutEffect />}></Route>
+        <Route path="/useonlinestatus" element={<HookUseOnlineStatus />}></Route>
+
         <Route path="/useinsertioneffect" element={<HookUseInsertionEffect />}></Route>
         <Route path="/usecontext" element={<HookUseContext />}></Route>
         <Route path="/usesynkexternalstore" element={<HookUseSyncExternalStore />}></Route>
         <Route path="/useid" element={<HookUseId />}></Route>
-        <Route path="/use" element={<HookUse />}></Route>
         <Route path="/useoptimistic" element={<HookUseOptimistic />}></Route>
         <Route path="/useformstatus" element={<HookUseFormStatus />}></Route>
         <Route path="/useactionstate" element={<HookUseActionState />}></Route>
-
-
-
 
       </Routes>
     </Router>
