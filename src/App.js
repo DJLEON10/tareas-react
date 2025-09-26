@@ -23,9 +23,7 @@ import HookUseId from "./playground/HookUseId";
 import HookUseOptimistic from "./playground/HookUseOptimistic";
 import HookUseFormStatus from "./playground/HookUseFormStatus";
 import HookUseActionState from "./playground/HookUseActionState";
-
-
-
+import ResetPassword from "./components/ResetPassword";
 
 function App() {
   return (
@@ -55,6 +53,8 @@ function App() {
         <Route path="/useoptimistic" element={<HookUseOptimistic />}></Route>
         <Route path="/useformstatus" element={<HookUseFormStatus />}></Route>
         <Route path="/useactionstate" element={<HookUseActionState />}></Route>
+
+        <Route path="/resetpassword" element={<ResetPassword />}></Route>
 
       </Routes>
     </Router>

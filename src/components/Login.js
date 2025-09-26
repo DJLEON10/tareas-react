@@ -64,15 +64,22 @@ export default function Register() {
 
           {error && <p className="text-red-500 text-sm">{error}</p>}
 
-          
-            <button
-              type="submit"
-              className="w-full bg-[#2d7a6b] text-white py-2 rounded-md hover:bg-[#0d4f4c] transition"
-            >
-              Iniciar Sesion
-            </button>
-          
+          <button
+            type="submit"
+            className="w-full bg-[#2d7a6b] text-white py-2 rounded-md hover:bg-[#0d4f4c] transition"
+          >
+            Iniciar Sesion
+          </button>
         </form>
+
+        <p className="text-center mt-4 text-sm">
+          <Link
+            to="/resetpassword"
+            className="text-[#2d7a6b] font-medium hover:underline"
+          >
+            ¿Olvidaste tu contraseña?
+          </Link>
+        </p>
 
         <p className="text-center mt-4 text-sm text-gray-600">
           ¿No tienes una cuenta?{" "}
