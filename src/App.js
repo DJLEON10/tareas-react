@@ -1,6 +1,6 @@
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
-import Register from "./components/Register";
-import Login from "./components/Login";
+import Register from "./pages/register-page/Register";
+import Login from "./pages/login-page/Login";
 import HookUseState from "./playground/HookUseState";
 import HomeHooks from "./playground/HomeHooks";
 import "./App.css";
@@ -23,7 +23,8 @@ import HookUseId from "./playground/HookUseId";
 import HookUseOptimistic from "./playground/HookUseOptimistic";
 import HookUseFormStatus from "./playground/HookUseFormStatus";
 import HookUseActionState from "./playground/HookUseActionState";
-import ResetPassword from "./components/ResetPassword";
+import ResetPassword from "./pages/resetpassword-pages/ResetPassword";
+import Sidebar from "./components/sidebar-page/Sidebar";
 
 function App() {
   return (
@@ -54,6 +55,8 @@ function App() {
         <Route path="/useactionstate" element={<HookUseActionState />}></Route>
 
         <Route path="/resetpassword" element={<ResetPassword />}></Route>
+        <Route path="/sidebar" element={<Sidebar />}></Route>
+
 
       </Routes>
     </Router>
