@@ -2,16 +2,14 @@ import { Link, useNavigate } from "react-router-dom";
 import { useState, useEffect } from "react";
 import Swal from "sweetalert2";
 import { createUserWithEmailAndPassword } from "firebase/auth";
-import { auth,db } from "../firebase";
-import {doc,setDoc} from "firebase/firestore"
+import { auth, db } from "../firebase";
+import { doc, setDoc } from "firebase/firestore";
 import { FaEye, FaEyeSlash } from "react-icons/fa";
-
-
 
 export default function Register() {
   const navigate = useNavigate();
 
-  const [showPassword,setShowPassword] = useState(false);
+  const [showPassword, setShowPassword] = useState(false);
 
   const [formData, setFormData] = useState({
     nombres: "",
@@ -49,34 +47,41 @@ export default function Register() {
     }
     setError("");
     Swal.fire("Usuario registrado con éxito 🎉");
-    navigate("/login")
+    navigate("/login");
 
-
-    if(password.length<6){
-      return Swal.fire("al menos tener 6 caracteres")
+    if (password.length < 6) {
+      return Swal.fire("al menos tener 6 caracteres");
     }
     try {
       const emaillower = email.toLocaleLowerCase();
-//crea usuario en servicio de autenticacion en firestore
-      const userMethod = await createUserWithEmailAndPassword(auth,emaillower,password);
-      const user =userMethod.user;
+      //crea usuario en servicio de autenticacion en firestore
+      const userMethod = await createUserWithEmailAndPassword(
+        auth,
+        emaillower,
+        password
+      );
+      const user = userMethod.user;
 
       //guardar datos en firestore
 
-      await setDoc(doc(db,"usuarios",user.uid),{
-        uid:user.uid,
-        nombre,apellido,emaillower,password , estado:"pendiente", rol:"visitante",creado:new Date(),metodo:"password"
+      await setDoc(doc(db, "usuarios", user.uid), {
+        uid: user.uid,
+        nombre,
+        apellido,
+        emaillower,
+        password,
+        estado: "pendiente",
+        rol: "visitante",
+        creado: new Date(),
+        metodo: "password",
       });
-
     } catch (error) {
-      console.error("error de registro ",error)
+      console.error("error de registro ", error);
 
-      if(error.code === "auth/email_already-in-use"){
-        Swal.fire("correo en uso ","debe ingresar otro correo " , "error ")
+      if (error.code === "auth/email_already-in-use") {
+        Swal.fire("correo en uso ", "debe ingresar otro correo ", "error ");
       }
     }
-
-
   };
 
   const handleChange = (e) => {
@@ -144,9 +149,13 @@ export default function Register() {
               placeholder="Contraseña"
               className="w-full p-2 rounded-md border border-[#2d7a6b] focus:outline-none focus:border-[#4a9d8e] focus:ring-1 focus:ring-[#7bc4b8]"
             />
-            <button type="button"
-            className="btn btn-outline-secundary"
-            onClick={()=>setShowPassword(!showPassword)}>{showPassword ? <FaEyeSlash>:<FaEyeSlash/>}</button>
+            <button
+              type="button"
+              onClick={() => setShowPassword(!showPassword)} 
+              className="px-3 text-gray-500 hover:text-gray-700"
+            >
+              {showPassword ? <FaEyeSlash /> : <FaEye />}
+            </button>
           </div>
 
           <div className="mb-4">
