@@ -25,6 +25,7 @@ import HookUseFormStatus from "./playground/HookUseFormStatus";
 import HookUseActionState from "./playground/HookUseActionState";
 import ResetPassword from "./pages/resetpassword-pages/ResetPassword";
 import Sidebar from "./components/sidebar-page/Sidebar";
+import Mascota from "./pages/mascota-page/Mascota";
 
 function App() {
   return (
@@ -56,6 +57,8 @@ function App() {
 
         <Route path="/resetpassword" element={<ResetPassword />}></Route>
         <Route path="/sidebar" element={<Sidebar />}></Route>
+        <Route path="/Mascota" element={<Mascota />}></Route>
+
 
 
       </Routes>
