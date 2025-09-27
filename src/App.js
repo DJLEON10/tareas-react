@@ -23,9 +23,7 @@ import HookUseId from "./playground/HookUseId";
 import HookUseOptimistic from "./playground/HookUseOptimistic";
 import HookUseFormStatus from "./playground/HookUseFormStatus";
 import HookUseActionState from "./playground/HookUseActionState";
-
-
-
+import ResetPassword from "./components/ResetPassword";
 
 function App() {
   return (
@@ -47,7 +45,6 @@ function App() {
         <Route path="/useeffect" element={<HookUseEffect />}></Route>
         <Route path="/uselayouteffect" element={<HookUseLayoutEffect />}></Route>
         <Route path="/useonlinestatus" element={<HookUseOnlineStatus />}></Route>
-
         <Route path="/useinsertioneffect" element={<HookUseInsertionEffect />}></Route>
         <Route path="/usecontext" element={<HookUseContext />}></Route>
         <Route path="/usesynkexternalstore" element={<HookUseSyncExternalStore />}></Route>
@@ -55,6 +52,8 @@ function App() {
         <Route path="/useoptimistic" element={<HookUseOptimistic />}></Route>
         <Route path="/useformstatus" element={<HookUseFormStatus />}></Route>
         <Route path="/useactionstate" element={<HookUseActionState />}></Route>
+
+        <Route path="/resetpassword" element={<ResetPassword />}></Route>
 
       </Routes>
     </Router>
