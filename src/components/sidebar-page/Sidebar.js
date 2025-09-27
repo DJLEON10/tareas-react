@@ -10,7 +10,7 @@ export default function Sidebar() {
         <div className="flex gap-x-4">
           <button className="hover:bg-red-400">
             <Link
-              to="/login"
+              to="/mascota"
               className="text-[#0d4f4c] font-semibold p-4 text-[20px]"
             >
               Mascotas
