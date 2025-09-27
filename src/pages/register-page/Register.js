@@ -2,7 +2,7 @@ import { Link, useNavigate } from "react-router-dom";
 import { useState, useEffect } from "react";
 import Swal from "sweetalert2";
 import { createUserWithEmailAndPassword } from "firebase/auth";
-import { auth, db } from "../firebase";
+import { auth, db } from "../../firebase";
 import { doc, setDoc } from "firebase/firestore";
 import { FaEye, FaEyeSlash } from "react-icons/fa";
 
@@ -200,12 +200,12 @@ export default function Register() {
           </Link>
         </p>
         <p className="text-center mt-4 text-sm text-gray-600">
-          ir a HomeHooks{" "}
+          ir a sidebar{" "}
           <Link
-            to="/home"
+            to="/sidebar"
             className="text-[#0d4f4c] font-semibold hover:underline  "
           >
-            home
+            sidebar
           </Link>
         </p>{" "}
       </div>
