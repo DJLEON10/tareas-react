@@ -45,7 +45,6 @@ function App() {
         <Route path="/useeffect" element={<HookUseEffect />}></Route>
         <Route path="/uselayouteffect" element={<HookUseLayoutEffect />}></Route>
         <Route path="/useonlinestatus" element={<HookUseOnlineStatus />}></Route>
-
         <Route path="/useinsertioneffect" element={<HookUseInsertionEffect />}></Route>
         <Route path="/usecontext" element={<HookUseContext />}></Route>
         <Route path="/usesynkexternalstore" element={<HookUseSyncExternalStore />}></Route>

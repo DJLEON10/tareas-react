@@ -68,3 +68,136 @@ This section has moved here: [https://facebook.github.io/create-react-app/docs/d
 ### `npm run build` fails to minify
 
 This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
+
+
+
+#dependencias o paquetes 
+*npm install firebase
+*nom install react-firebase-hooks
+*npm install tailwind-c
+*npm install react-router-dom 
+*npm install sweetalert2
+
+
+
+
+export default function Register() {
+  const navigate = useNavigate();
+
+  // UN SOLO ESTADO para manejar todos los datos del formulario
+  const [formData, setFormData] = useState({
+    nombre: "", // Cambié de "nombres" a "nombre"
+    apellido: "",
+    email: "",
+    password: "",
+    confirmPassword: "",
+  });
+
+  const [error, setError] = useState("");
+
+  useEffect(() => {
+    if (formData.confirmPassword.length > 0) {
+      if (formData.password !== formData.confirmPassword) {
+        setError("Las contraseñas no coinciden");
+      } else {
+        setError(""); // si son iguales se limpia
+      }
+    }
+  }, [formData.password, formData.confirmPassword]);
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    
+    // Extraemos los datos del formData
+    const { nombre, apellido, email, password, confirmPassword } = formData;
+
+    // Validación de campos obligatorios
+    if (!nombre || !apellido || !email || !password || !confirmPassword) {
+      setError("Todos los campos son obligatorios");
+      return;
+    }
+
+    // Validación de contraseñas
+    if (password !== confirmPassword) {
+      setError("Las contraseñas no coinciden");
+      return;
+    }
+
+    // Validación de longitud de contraseña
+    if (password.length < 6) {
+      Swal.fire({
+        icon: "error",
+        title: "Error",
+        text: "La contraseña debe tener al menos 6 caracteres"
+      });
+      return;
+    }
+
+    setError("");
+
+    try {
+      const emaillower = email.toLowerCase();
+      
+      // Crear usuario en Firebase Authentication
+      const userMethod = await createUserWithEmailAndPassword(auth, emaillower, password);
+      const user = userMethod.user;
+
+      // Guardar datos en Firestore
+      await setDoc(doc(db, "usuarios", user.uid), {
+        uid: user.uid,
+        nombre,
+        apellido,
+        email: emaillower,
+        password, // Nota: en producción no deberías guardar la contraseña en texto plano
+        estado: "pendiente",
+        rol: "visitante",
+        creado: new Date(),
+        metodo: "password"
+      });
+
+      // Mostrar mensaje de éxito y navegar DESPUÉS del registro exitoso
+      Swal.fire({
+        icon: "success",
+        title: "¡Éxito!",
+        text: "Usuario registrado con éxito 🎉"
+      }).then(() => {
+        navigate("/login");
+      });
+
+    } catch (error) {
+      console.error("Error de registro:", error);
+
+      if (error.code === "auth/email-already-in-use") {
+        Swal.fire({
+          icon: "error",
+          title: "Correo en uso",
+          text: "Debe ingresar otro correo electrónico"
+        });
+      } else if (error.code === "auth/weak-password") {
+        Swal.fire({
+          icon: "error",
+          title: "Contraseña débil",
+          text: "La contraseña debe tener al menos 6 caracteres"
+        });
+      } else if (error.code === "auth/invalid-email") {
+        Swal.fire({
+          icon: "error",
+          title: "Email inválido",
+          text: "Por favor ingrese un email válido"
+        });
+      } else {
+        Swal.fire({
+          icon: "error",
+          title: "Error",
+          text: "Ocurrió un error durante el registro. Intente nuevamente."
+        });
+      }
+    }
+  };
+
+  const handleChange = (e) => {
+    setFormData({
+      ...formData,
+      [e.target.name]: e.target.value,
+    });
+  };
