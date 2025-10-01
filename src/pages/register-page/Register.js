@@ -189,6 +189,7 @@ export default function Register() {
               Registrarse
             </button>
           )}
+          
         </form>
         <p className="text-center mt-4 text-sm text-gray-600">
           ¿Ya tienes una cuenta?{" "}

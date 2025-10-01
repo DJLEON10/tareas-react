@@ -28,10 +28,10 @@ export default function Sidebar() {
 
           <button className="hover:bg-red-400">
             <Link
-              to="/clientes"
+              to="/medicamentos-index"
               className="text-[#0d4f4c] font-semibold p-4 text-[20px]"
             >
-              Clientes
+              Medicamentoss 
             </Link>
           </button>
         </div>
