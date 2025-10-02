@@ -1,6 +1,6 @@
 import { initializeApp } from "firebase/app";
 import { getAnalytics } from "firebase/analytics";
-import { getAuth, signOut, GoogleAuthProvider } from "firebase/auth";
+import { getAuth, signOut, GoogleAuthProvider, sendPasswordResetEmail  } from "firebase/auth";
 import { getFirestore } from "firebase/firestore";
 
 const firebaseConfig = {
@@ -23,5 +23,19 @@ const googleProvider = new GoogleAuthProvider();
 
 // Firestore
 const db = getFirestore(app);
+
+export const resetPassword = async (email) => {
+  try {
+    await sendPasswordResetEmail(auth, email);
+    return { success: true, message: "Se ha enviado un enlace de recuperación a tu correo." };
+  } catch (error) {
+    let errorMessage = "Ocurrió un error. Inténtalo de nuevo.";
+
+    if (error.code === "auth/invalid-email") {
+      errorMessage = "El formato del correo no es válido.";
+    }
+    return { success: false, message: errorMessage };
+  }
+};
 
 export { auth, googleProvider, db, signOut };
