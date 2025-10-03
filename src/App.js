@@ -26,6 +26,7 @@ import HookUseActionState from "./playground/HookUseActionState";
 import ResetPassword from "./pages/resetpassword-pages/ResetPassword";
 import Sidebar from "./components/sidebar-page/Sidebar";
 import Mascota from "./pages/mascota-page/Mascota";
+import VeterinarioList from "./pages/veterinario-page/VeterinariosList";
 
 function App() {
   return (
@@ -58,8 +59,7 @@ function App() {
         <Route path="/resetpassword" element={<ResetPassword />}></Route>
         <Route path="/sidebar" element={<Sidebar />}></Route>
         <Route path="/Mascota" element={<Mascota />}></Route>
-
-
+        <Route path="/Veterinarios" element={<VeterinarioList/>}></Route>
 
       </Routes>
     </Router>
