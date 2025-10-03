@@ -3,6 +3,7 @@ import { getAnalytics } from "firebase/analytics";
 import { getAuth, signOut, GoogleAuthProvider, sendPasswordResetEmail  } from "firebase/auth";
 import { getFirestore } from "firebase/firestore";
 
+
 const firebaseConfig = {
   apiKey: "AIzaSyA_o19RFUTArdsm0jsY47b_Q9cKVH8LRng",
   authDomain: "primer-proyecto-b9242.firebaseapp.com",
