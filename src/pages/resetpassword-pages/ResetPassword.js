@@ -1,12 +1,13 @@
 import { Link } from "react-router-dom";
 import { useState } from "react";
+import { resetPassword } from "../../firebase"; 
 
 export default function ForgotPassword() {
   const [email, setEmail] = useState("");
   const [message, setMessage] = useState("");
   const [error, setError] = useState("");
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
 
     if (!email) {
@@ -15,14 +16,21 @@ export default function ForgotPassword() {
     }
 
     setError("");
-    //validar firebase cuando se agregue
-    alert(`Se ha enviado un enlace de recuperación al correo: ${email}`);
-    setEmail("");
+    setMessage("");
+
+    const result = await resetPassword(email);
+
+    if (result.success) {
+      setMessage(result.message);
+      setEmail("");
+    } else {
+      setError(result.message);
+    }
   };
 
   return (
     <div className="min-h-screen flex justify-center items-center bg-gradient-to-br from-[#0d4f4c] via-[#2d7a6b] to-[#a8e6cf]">
-      <div className="flex flex-col bg-white/90 p-10 rounded-2xl shadow-xl w-full max-w-md border border-[#7bc4b8]/30 backdrop-blur-md transform transition-all duration-300 hover:scale-105 hover:-translate-y-1 hover:shadow-xl ">
+      <div className="flex flex-col bg-white/90 p-10 rounded-2xl shadow-xl w-full max-w-md border border-[#7bc4b8]/30 backdrop-blur-md">
         <h1 className="text-2xl font-semibold text-center">Recuperar contraseña</h1>
 
         <form onSubmit={handleSubmit}>
@@ -51,10 +59,7 @@ export default function ForgotPassword() {
         </form>
 
         <p className="text-center mt-4 text-sm">
-          <Link
-            to="/login"
-            className="text-[#2d7a6b] font-medium hover:underline"
-          >
+          <Link to="/login" className="text-[#2d7a6b] font-medium hover:underline">
             Volver al login
           </Link>
         </p>
