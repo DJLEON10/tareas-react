@@ -33,11 +33,7 @@ import Mascota from "./pages/mascota-page/Mascota";
 import AgregarMascota from "./pages/mascota-page/agregarmacota";
 import EditarMascota from "./pages/mascota-page/editarmascota";
 import VerMascota from "./pages/mascota-page/vermascota";
-
-
-
 import Sidebar from "./components/sidebar-page/Sidebar";
-import Mascota from "./pages/mascota-page/Mascota";
 
 function App() {
   return (
