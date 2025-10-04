@@ -24,6 +24,18 @@ import HookUseOptimistic from "./playground/HookUseOptimistic";
 import HookUseFormStatus from "./playground/HookUseFormStatus";
 import HookUseActionState from "./playground/HookUseActionState";
 import ResetPassword from "./pages/resetpassword-pages/ResetPassword";
+import MedicamentosCreate from "./pages/medicamentos-page/medicamentos-create";
+import MedicamentosIndex from "./pages/medicamentos-page/Medicamentos-index";
+import MedicamentosEdit from "./pages/medicamentos-page/medicamentos-edit";
+import VeterinariosList from "./pages/veterinario-page/VeterinariosList";
+import VeterinarioAdd from "./pages/veterinario-page/VeterinarioAdd";
+import Mascota from "./pages/mascota-page/Mascota";
+import AgregarMascota from "./pages/mascota-page/agregarmacota";
+import EditarMascota from "./pages/mascota-page/editarmascota";
+import VerMascota from "./pages/mascota-page/vermascota";
+
+
+
 import Sidebar from "./components/sidebar-page/Sidebar";
 
 function App() {
@@ -56,6 +68,18 @@ function App() {
 
         <Route path="/resetpassword" element={<ResetPassword />}></Route>
         <Route path="/sidebar" element={<Sidebar />}></Route>
+        <Route path="/medicamentos-create" element={<MedicamentosCreate />}></Route>
+        <Route path="/medicamentos-index" element={<MedicamentosIndex />}></Route>
+        <Route path="/medicamentos-edit/:id" element={<MedicamentosEdit />} />
+        <Route path="/veterinarios" element={<VeterinariosList />}></Route>
+        <Route path="/veterinarios/add" element={<VeterinarioAdd />}></Route>
+        <Route path="/Mascota" element={<Mascota />}></Route>
+        <Route path="/agregarmascota" element={<AgregarMascota />}></Route>
+        <Route path="/editarmascota/:id" element={<EditarMascota />}></Route>
+        <Route path="/vermascota/:id" element={<VerMascota />}></Route>
+        
+
+
 
 
       </Routes>
