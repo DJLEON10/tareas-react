@@ -31,7 +31,16 @@ export default function Sidebar() {
               to="/medicamentos-index"
               className="text-[#0d4f4c] font-semibold p-4 text-[20px]"
             >
-              Medicamentoss 
+              Medicamentoss
+            </Link>
+          </button>
+
+          <button className="hover:bg-red-400">
+            <Link
+              to="/Veterinarios"
+              className="text-[#0d4f4c] font-semibold p-4 text-[20px]"
+            >
+              Veterinarios
             </Link>
           </button>
         </div>

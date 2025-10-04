@@ -59,8 +59,6 @@ function App() {
         <Route path="/sidebar" element={<Sidebar />}></Route>
         <Route path="/Mascota" element={<Mascota />}></Route>
 
-
-
       </Routes>
     </Router>
   );
