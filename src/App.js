@@ -37,6 +37,7 @@ import VerMascota from "./pages/mascota-page/vermascota";
 
 
 import Sidebar from "./components/sidebar-page/Sidebar";
+import Mascota from "./pages/mascota-page/Mascota";
 
 function App() {
   return (
@@ -81,6 +82,7 @@ function App() {
 
 
 
+        <Route path="/Mascota" element={<Mascota />}></Route>
 
       </Routes>
     </Router>
