@@ -27,7 +27,7 @@ export default function VeterinarioList() {
         <div className="bg-white rounded-lg shadow-sm p-6 mb-6 flex justify-between items-center">
           <h1 className="text-3xl font-bold text-gray-800">Listado de Veterinarios</h1>
           <div className="flex gap-2">
-            <Link to="">
+            <Link to="/veterinarios/add">
               <button className="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-lg transition-colors">
                 Agregar nuevo veterinario
               </button>
