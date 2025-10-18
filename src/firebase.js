@@ -26,15 +26,14 @@ const db = getFirestore(app);
 
 export const resetPassword = async (email) => {
   try {
-    await sendPasswordResetEmail(auth, email);
-    return { success: true, message: "Se ha enviado un enlace de recuperación a tu correo." };
+    await sendPasswordResetEmail(auth, email, {
+      url: "http://localhost:3000/resetpassword",
+      handleCodeInApp: true,
+    });
+    return { success: true, message: "Se ha enviado un enlace a tu correo" };
   } catch (error) {
-    let errorMessage = "Ocurrió un error. Inténtalo de nuevo.";
-
-    if (error.code === "auth/invalid-email") {
-      errorMessage = "El formato del correo no es válido.";
-    }
-    return { success: false, message: errorMessage };
+    console.error(error);
+    return { success: false, message: "Error al enviar el correo" };
   }
 };
 

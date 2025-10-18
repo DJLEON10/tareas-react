@@ -66,7 +66,7 @@ export default function Login() {
         </form>
 
         <p className="text-center mt-4 text-sm">
-          <Link to="/resetpassword" className="text-[#2d7a6b] font-medium ">
+          <Link to="/forgotpassword" className="text-[#2d7a6b] font-medium ">
             ¿Olvidaste tu contraseña?
           </Link>
         </p>
