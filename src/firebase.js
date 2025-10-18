@@ -8,13 +8,12 @@ const firebaseConfig = {
   apiKey: "AIzaSyA_o19RFUTArdsm0jsY47b_Q9cKVH8LRng",
   authDomain: "primer-proyecto-b9242.firebaseapp.com",
   projectId: "primer-proyecto-b9242",
-  storageBucket: "primer-proyecto-b9242.appspot.com", // corregí el dominio
+  storageBucket: "primer-proyecto-b9242.appspot.com", 
   messagingSenderId: "577680407601",
   appId: "1:577680407601:web:b24ae61e1b8cc65a056910",
   measurementId: "G-WCG09YP4T3"
 };
 
-// Initialize Firebase
 const app = initializeApp(firebaseConfig);
 const analytics = getAnalytics(app);
 
