@@ -1,7 +1,8 @@
+// Login.jsx
 import { Link, useNavigate } from "react-router-dom";
 import { useState } from "react";
-import { signInWithEmailAndPassword } from "firebase/auth";
-import { auth } from "../../firebase"; 
+import { signInWithEmailAndPassword, signInWithPopup } from "firebase/auth";
+import { auth, githubProvider } from "../../firebase";
 
 export default function Login() {
   const [email, setEmail] = useState("");
@@ -19,11 +20,20 @@ export default function Login() {
 
     try {
       await signInWithEmailAndPassword(auth, email, password);
-
       navigate("/sidebar");
     } catch (err) {
       console.log(err);
       setError("Correo o contraseña incorrectos");
+    }
+  };
+
+  const handleGithubLogin = async () => {
+    try {
+      await signInWithPopup(auth, githubProvider);
+      navigate("/sidebar");
+    } catch (error) {
+      console.log(error);
+      setError("Error al iniciar sesión con GitHub");
     }
   };
 
@@ -65,8 +75,17 @@ export default function Login() {
           </button>
         </form>
 
+        <div className="mt-4">
+          <button
+            onClick={handleGithubLogin}
+            className="w-full bg-black text-white py-2 rounded-md hover:bg-gray-800 transition flex items-center justify-center gap-2"
+          >
+            <i className="fa-brands fa-github text-xl"></i> Ingresar con GitHub
+          </button>
+        </div>
+
         <p className="text-center mt-4 text-sm">
-          <Link to="/forgotpassword" className="text-[#2d7a6b] font-medium ">
+          <Link to="/forgotpassword" className="text-[#2d7a6b] font-medium">
             ¿Olvidaste tu contraseña?
           </Link>
         </p>
