@@ -3,6 +3,8 @@ import { Link, useNavigate } from "react-router-dom";
 import { useState } from "react";
 import { signInWithEmailAndPassword, signInWithPopup } from "firebase/auth";
 import { auth, githubProvider } from "../../firebase";
+import { GoogleAuthProvider } from "firebase/auth";
+
 
 export default function Login() {
   const [email, setEmail] = useState("");
@@ -34,6 +36,19 @@ export default function Login() {
     } catch (error) {
       console.log(error);
       setError("Error al iniciar sesión con GitHub");
+    }
+  };
+  const handleGoogleLogin = async () => {
+    const provider = new GoogleAuthProvider();
+
+    try {
+      const result = await signInWithPopup(auth, provider);
+      const user = result.user;
+      console.log("Usuario con Google:", user);
+      navigate("/sidebar");
+    } catch (error) {
+      console.error("Error al iniciar sesión con Google:", error);
+      setError("No se pudo iniciar sesión con Google");
     }
   };
 
@@ -73,6 +88,16 @@ export default function Login() {
           >
             Iniciar Sesión
           </button>
+          <div className="mt-4">
+            <button
+              type="button"
+              onClick={handleGoogleLogin}
+              className="w-full flex items-center justify-center gap-2 bg-white border border-gray-300 py-2 rounded-md shadow-sm hover:bg-gray-100 transition"
+            >
+             
+              <span className="text-gray-700 font-medium">Iniciar con Google</span>
+            </button>
+          </div>
         </form>
 
         <div className="mt-4">
