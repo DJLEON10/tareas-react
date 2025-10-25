@@ -1,8 +1,14 @@
+// firebase.js
 import { initializeApp } from "firebase/app";
 import { getAnalytics } from "firebase/analytics";
-import { getAuth, signOut, GoogleAuthProvider, sendPasswordResetEmail  } from "firebase/auth";
+import { 
+  getAuth, 
+  signOut, 
+  GoogleAuthProvider, 
+  GithubAuthProvider,
+  sendPasswordResetEmail  
+} from "firebase/auth";
 import { getFirestore } from "firebase/firestore";
-
 
 const firebaseConfig = {
   apiKey: "AIzaSyA_o19RFUTArdsm0jsY47b_Q9cKVH8LRng",
@@ -17,13 +23,15 @@ const firebaseConfig = {
 const app = initializeApp(firebaseConfig);
 const analytics = getAnalytics(app);
 
-// Auth
+// Auth Providers
 const auth = getAuth(app);
 const googleProvider = new GoogleAuthProvider();
+const githubProvider = new GithubAuthProvider();
 
 // Firestore
 const db = getFirestore(app);
 
+// Recuperar contraseña
 export const resetPassword = async (email) => {
   try {
     await sendPasswordResetEmail(auth, email, {
@@ -37,4 +45,4 @@ export const resetPassword = async (email) => {
   }
 };
 
-export { auth, googleProvider, db, signOut };
+export { auth, googleProvider, githubProvider, db, signOut };
