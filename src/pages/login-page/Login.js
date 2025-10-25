@@ -1,10 +1,8 @@
 // Login.jsx
 import { Link, useNavigate } from "react-router-dom";
 import { useState } from "react";
-import { signInWithEmailAndPassword, signInWithPopup } from "firebase/auth";
+import { signInWithEmailAndPassword, signInWithPopup, FacebookAuthProvider, GoogleAuthProvider } from "firebase/auth";
 import { auth, githubProvider } from "../../firebase";
-import { GoogleAuthProvider } from "firebase/auth";
-
 
 export default function Login() {
   const [email, setEmail] = useState("");
@@ -49,6 +47,19 @@ export default function Login() {
     } catch (error) {
       console.error("Error al iniciar sesión con Google:", error);
       setError("No se pudo iniciar sesión con Google");
+    }
+  };
+
+  const handleFacebookLogin = async () => {
+    const provider = new FacebookAuthProvider();
+    try {
+      const result = await signInWithPopup(auth, provider);
+      const user = result.user;
+      console.log("Usuario con Facebook:", user);
+      navigate("/sidebar");
+    } catch (error) {
+      console.error("Error al iniciar sesión con Facebook:", error);
+      setError("No se pudo iniciar sesión con Facebook");
     }
   };
 
@@ -105,7 +116,19 @@ export default function Login() {
             onClick={handleGithubLogin}
             className="w-full bg-black text-white py-2 rounded-md hover:bg-gray-800 transition flex items-center justify-center gap-2"
           >
-            <i className="fa-brands fa-github text-xl"></i> Ingresar con GitHub
+            <i className="fa-brands fa-github text-xl"></i>
+            Ingresar con GitHub
+          </button>
+        </div>
+
+        {/* Login con Facebook */}
+        <div className="mt-4">
+          <button
+            onClick={handleFacebookLogin}
+            className="w-full bg-[#1877f2] text-white py-2 rounded-md hover:bg-[#145dbf] transition flex items-center justify-center gap-2"
+          >
+            <i className="fa-brands fa-facebook-f text-lg"></i>
+            Iniciar con Facebook
           </button>
         </div>
 
