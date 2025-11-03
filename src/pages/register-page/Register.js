@@ -90,38 +90,46 @@ export default function Register() {
   };
 
   return (
-    <div className="min-h-screen flex justify-center items-center bg-gradient-to-br from-[#0d4f4c] via-[#2d7a6b] to-[#a8e6cf]">
-      <div className="flex flex-col bg-white/90 p-10 rounded-2xl shadow-xl w-full max-w-md border border-[#7bc4b8]/30 backdrop-blur-md transform transition-all duration-300 hover:scale-105 hover:-translate-y-1 hover:shadow-xl">
-        <h1 className="text-2xl font-semibold text-center">Crear una cuenta</h1>
-        <form onSubmit={handleSubmit}>
-          <div className="mb-4 relative">
-            <label className="block text-[#0d4f4c] font-medium">Nombre</label>
-            <input
-              type="text"
-              required
-              value={nombre}
-              name="nombre"
-              onChange={handleChange}
-              placeholder="Tu nombre"
-              className="w-full p-2 rounded-md border border-[#2d7a6b] focus:outline-none focus:border-[#4a9d8e] focus:ring-1 focus:ring-[#7bc4b8]"
-            />
+    <div className="min-h-screen flex justify-center items-center bg-gradient-to-br from-[#0d4f4c] via-[#2d7a6b] to-[#a8e6cf] p-4">
+      <div className="flex flex-col bg-white/90 p-6 sm:p-8 md:p-10 rounded-2xl shadow-xl w-full max-w-md border border-[#7bc4b8]/30 backdrop-blur-md transform transition-all duration-300 hover:scale-105 hover:-translate-y-1 hover:shadow-xl">
+        <h1 className="text-xl sm:text-2xl font-semibold text-center mb-4 sm:mb-6">
+          Crear una cuenta
+        </h1>
+        <form onSubmit={handleSubmit} className="space-y-3 sm:space-y-4">
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 sm:gap-4">
+            <div className="relative">
+              <label className="block text-[#0d4f4c] font-medium text-sm mb-1">
+                Nombre
+              </label>
+              <input
+                type="text"
+                required
+                value={nombre}
+                name="nombre"
+                onChange={handleChange}
+                placeholder="Tu nombre"
+                className="w-full p-2 text-sm sm:text-base rounded-md border border-[#2d7a6b] focus:outline-none focus:border-[#4a9d8e] focus:ring-1 focus:ring-[#7bc4b8]"
+              />
+            </div>
+
+            <div className="relative">
+              <label className="block text-[#0d4f4c] font-medium text-sm mb-1">
+                Apellido
+              </label>
+              <input
+                type="text"
+                required
+                value={apellido}
+                name="apellido"
+                onChange={handleChange}
+                placeholder="Tu apellido"
+                className="w-full p-2 text-sm sm:text-base rounded-md border border-[#2d7a6b] focus:outline-none focus:border-[#4a9d8e] focus:ring-1 focus:ring-[#7bc4b8]"
+              />
+            </div>
           </div>
 
-          <div className="mb-4 relative">
-            <label className="block text-[#0d4f4c] font-medium">Apellido</label>
-            <input
-              type="text"
-              required
-              value={apellido}
-              name="apellido"
-              onChange={handleChange}
-              placeholder="Tu apellido"
-              className="w-full p-2 rounded-md border border-[#2d7a6b] focus:outline-none focus:border-[#4a9d8e] focus:ring-1 focus:ring-[#7bc4b8]"
-            />
-          </div>
-
-          <div className="mb-4 relative">
-            <label className="block text-[#0d4f4c] font-medium">
+          <div className="relative">
+            <label className="block text-[#0d4f4c] font-medium text-sm mb-1">
               Correo electrónico
             </label>
             <input
@@ -131,12 +139,12 @@ export default function Register() {
               value={email}
               onChange={handleChange}
               placeholder="Correo electrónico"
-              className="w-full p-2 rounded-md border border-[#2d7a6b] focus:outline-none focus:border-[#4a9d8e] focus:ring-1 focus:ring-[#7bc4b8]"
+              className="w-full p-2 text-sm sm:text-base rounded-md border border-[#2d7a6b] focus:outline-none focus:border-[#4a9d8e] focus:ring-1 focus:ring-[#7bc4b8]"
             />
           </div>
 
-          <div className="mb-4 relative">
-            <label className="block text-[#0d4f4c] font-medium">
+          <div className="relative">
+            <label className="block text-[#0d4f4c] font-medium text-sm mb-1">
               Contraseña
             </label>
             <div className="relative">
@@ -147,20 +155,20 @@ export default function Register() {
                 value={password}
                 onChange={handleChange}
                 placeholder="Contraseña"
-                className="w-full p-2 pr-10 rounded-md border border-[#2d7a6b] focus:outline-none focus:border-[#4a9d8e] focus:ring-1 focus:ring-[#7bc4b8]"
+                className="w-full p-2 pr-10 text-sm sm:text-base rounded-md border border-[#2d7a6b] focus:outline-none focus:border-[#4a9d8e] focus:ring-1 focus:ring-[#7bc4b8]"
               />
               <button
                 type="button"
                 onClick={() => setShowPassword(!showPassword)}
-                className="absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-500 hover:text-gray-700"
+                className="absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-500 hover:text-gray-700 focus:outline-none"
               >
-                {showPassword ? <FaEyeSlash /> : <FaEye />}
+                {showPassword ? <FaEyeSlash size={18} /> : <FaEye size={18} />}
               </button>
             </div>
           </div>
 
-          <div className="mb-4 relative">
-            <label className="block text-[#0d4f4c] font-medium">
+          <div className="relative">
+            <label className="block text-[#0d4f4c] font-medium text-sm mb-1">
               Confirmar contraseña
             </label>
             <div className="relative">
@@ -171,7 +179,7 @@ export default function Register() {
                 value={confirmPassword}
                 onChange={handleChange}
                 placeholder="Confirmar contraseña"
-                className={`w-full p-2 pr-10 rounded-md border focus:outline-none ${
+                className={`w-full p-2 pr-10 text-sm sm:text-base rounded-md border focus:outline-none ${
                   error
                     ? "border-red-500"
                     : confirmPassword
@@ -182,42 +190,48 @@ export default function Register() {
               <button
                 type="button"
                 onClick={() => setShowConfirmPassword(!showConfirmPassword)}
-                className="absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-500 hover:text-gray-700"
+                className="absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-500 hover:text-gray-700 focus:outline-none"
               >
-                {showConfirmPassword ? <FaEyeSlash /> : <FaEye />}
+                {showConfirmPassword ? <FaEyeSlash size={18} /> : <FaEye size={18} />}
               </button>
             </div>
           </div>
 
-          {error && <p className="text-red-500 text-sm">{error}</p>}
+          {error && (
+            <p className="text-red-500 text-xs sm:text-sm bg-red-50 p-2 rounded">
+              {error}
+            </p>
+          )}
 
           <button
             type="submit"
-            className="w-full bg-[#2d7a6b] text-white py-2 rounded-md hover:bg-[#0d4f4c] transition"
+            className="w-full bg-[#2d7a6b] text-white py-2.5 sm:py-3 rounded-md hover:bg-[#0d4f4c] transition-colors font-medium text-sm sm:text-base"
           >
             Registrarse
           </button>
         </form>
 
-        <p className="text-center mt-4 text-sm text-gray-600">
-          ¿Ya tienes una cuenta?{" "}
-          <Link
-            to="/login"
-            className="text-[#0d4f4c] font-semibold hover:underline"
-          >
-            Inicia sesión
-          </Link>
-        </p>
+        <div className="mt-4 sm:mt-6 space-y-2">
+          <p className="text-center text-xs sm:text-sm text-gray-600">
+            ¿Ya tienes una cuenta?{" "}
+            <Link
+              to="/login"
+              className="text-[#0d4f4c] font-semibold hover:underline"
+            >
+              Inicia sesión
+            </Link>
+          </p>
 
-        <p className="text-center mt-4 text-sm text-gray-600">
-          Ir a sidebar{" "}
-          <Link
-            to="/sidebar"
-            className="text-[#0d4f4c] font-semibold hover:underline"
-          >
-            Sidebar
-          </Link>
-        </p>
+          <p className="text-center text-xs sm:text-sm text-gray-600">
+            Ir a sidebar{" "}
+            <Link
+              to="/sidebar"
+              className="text-[#0d4f4c] font-semibold hover:underline"
+            >
+              Sidebar
+            </Link>
+          </p>
+        </div>
       </div>
     </div>
   );
