@@ -58,20 +58,20 @@ export default function EditarMascotaModal({ id, onClose }) {
   if (!formData) return null;
 
   return (
-    <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50">
-      <div className="bg-white rounded-xl shadow-xl p-6 w-[90%] max-w-3xl relative">
+    <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50 p-4">
+      <div className="bg-white rounded-xl shadow-xl p-4 sm:p-6 w-full max-w-3xl relative max-h-[90vh] overflow-y-auto">
         <button
-          className="absolute top-2 right-2 text-gray-500 text-xl font-bold"
+          className="absolute top-2 right-2 text-gray-500 hover:text-gray-700 text-xl font-bold"
           onClick={onClose}
         >
           ×
         </button>
 
-        <h1 className="text-3xl font-bold text-center text-gray-800 mb-6">
+        <h1 className="text-2xl sm:text-3xl font-bold text-center text-gray-800 mb-4 sm:mb-6 pr-6">
           Editar Mascota
         </h1>
 
-        <div className="space-y-4">
+        <div className="space-y-3 sm:space-y-4">
           <div>
             <label className="block text-sm font-semibold text-gray-700 mb-2">
               Nombre
@@ -81,7 +81,7 @@ export default function EditarMascotaModal({ id, onClose }) {
               name="nombre"
               value={formData.nombre}
               onChange={handleInputChange}
-              className="w-full px-4 py-3 border rounded-lg"
+              className="w-full px-3 sm:px-4 py-2 sm:py-3 border border-gray-300 rounded-lg text-sm sm:text-base focus:ring-2 focus:ring-green-500 focus:border-transparent"
             />
           </div>
 
@@ -93,7 +93,7 @@ export default function EditarMascotaModal({ id, onClose }) {
               name="especie"
               value={formData.especie}
               onChange={handleInputChange}
-              className="w-full px-4 py-3 border rounded-lg"
+              className="w-full px-3 sm:px-4 py-2 sm:py-3 border border-gray-300 rounded-lg text-sm sm:text-base focus:ring-2 focus:ring-green-500 focus:border-transparent"
             >
               <option value="">Selecciona una especie</option>
               {especies.map((esp) => (
@@ -104,17 +104,34 @@ export default function EditarMascotaModal({ id, onClose }) {
             </select>
           </div>
 
-          <div>
-            <label className="block text-sm font-semibold text-gray-700 mb-2">
-              Edad
-            </label>
-            <input
-              type="text"
-              name="edad"
-              value={formData.edad}
-              onChange={handleInputChange}
-              className="w-full px-4 py-3 border rounded-lg"
-            />
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 sm:gap-4">
+            <div>
+              <label className="block text-sm font-semibold text-gray-700 mb-2">
+                Edad
+              </label>
+              <input
+                type="text"
+                name="edad"
+                value={formData.edad}
+                onChange={handleInputChange}
+                className="w-full px-3 sm:px-4 py-2 sm:py-3 border border-gray-300 rounded-lg text-sm sm:text-base focus:ring-2 focus:ring-green-500 focus:border-transparent"
+              />
+            </div>
+
+            <div>
+              <label className="block text-sm font-semibold text-gray-700 mb-2">
+                Estado
+              </label>
+              <select
+                name="estado"
+                value={formData.estado}
+                onChange={handleInputChange}
+                className="w-full px-3 sm:px-4 py-2 sm:py-3 border border-gray-300 rounded-lg text-sm sm:text-base focus:ring-2 focus:ring-green-500 focus:border-transparent"
+              >
+                <option value="activo">Activo</option>
+                <option value="inactivo">Inactivo</option>
+              </select>
+            </div>
           </div>
 
           <div>
@@ -126,35 +143,20 @@ export default function EditarMascotaModal({ id, onClose }) {
               name="dueno"
               value={formData.dueno}
               onChange={handleInputChange}
-              className="w-full px-4 py-3 border rounded-lg"
+              className="w-full px-3 sm:px-4 py-2 sm:py-3 border border-gray-300 rounded-lg text-sm sm:text-base focus:ring-2 focus:ring-green-500 focus:border-transparent"
             />
           </div>
 
-          <div>
-            <label className="block text-sm font-semibold text-gray-700 mb-2">
-              Estado
-            </label>
-            <select
-              name="estado"
-              value={formData.estado}
-              onChange={handleInputChange}
-              className="w-full px-4 py-3 border rounded-lg"
-            >
-              <option value="activo">Activo</option>
-              <option value="inactivo">Inactivo</option>
-            </select>
-          </div>
-
-          <div className="flex justify-end gap-4 pt-4">
+          <div className="flex flex-col-reverse sm:flex-row justify-end gap-3 sm:gap-4 pt-3 sm:pt-4">
             <button
               onClick={onClose}
-              className="bg-gray-300 hover:bg-gray-400 px-6 py-3 rounded-lg"
+              className="w-full sm:w-auto bg-gray-300 hover:bg-gray-400 px-4 sm:px-6 py-2.5 sm:py-3 rounded-lg font-medium text-sm sm:text-base transition-colors"
             >
               Cancelar
             </button>
             <button
               onClick={handleUpdate}
-              className="bg-green-500 hover:bg-green-600 text-white px-6 py-3 rounded-lg"
+              className="w-full sm:w-auto bg-green-500 hover:bg-green-600 text-white px-4 sm:px-6 py-2.5 sm:py-3 rounded-lg font-medium text-sm sm:text-base transition-colors"
             >
               Guardar cambios
             </button>
