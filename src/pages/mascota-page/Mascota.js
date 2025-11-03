@@ -1,12 +1,18 @@
 import { useEffect, useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { db } from "../../firebase";
 import { collection, onSnapshot, deleteDoc, doc } from "firebase/firestore";
-
-
+import AgregarMascota from "../../pages/mascota-page/agregarmacota";
+import VerMascotaModal from "../../pages/mascota-page/vermascota";
+import EditarMascotaModal from "../../pages/mascota-page/editarmascota";
 
 const PetListDemo = () => {
   const [pets, setPets] = useState([]);
+  const [openModalAgregar, setOpenModalAgregar] = useState(false);
+  const [openModalVer, setOpenModalVer] = useState(false);
+  const [openModalEditar, setOpenModalEditar] = useState(false);
+  const [selectedPetId, setSelectedPetId] = useState(null);
+  const navigate = useNavigate();
 
   useEffect(() => {
     const unsubscribe = onSnapshot(collection(db, "mascotas"), (snapshot) => {
@@ -34,16 +40,14 @@ const PetListDemo = () => {
     <div className="min-h-screen bg-gray-50 p-6">
       <div className="max-w-6xl mx-auto">
         <div className="bg-white rounded-lg shadow-sm p-6 mb-6 flex justify-between items-center">
-          <h1 className="text-3xl font-bold text-gray-800">
-            Listado de Mascotas
-          </h1>
+          <h1 className="text-3xl font-bold text-gray-800">Listado de Mascotas</h1>
           <div className="flex gap-4">
-            <Link
-              to="/agregarmascota"
+            <button
+              onClick={() => setOpenModalAgregar(true)}
               className="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-lg"
             >
               Agregar nueva mascota
-            </Link>
+            </button>
             <Link
               to="/sidebar"
               className="bg-red-400 hover:bg-red-700 text-white px-4 py-2 rounded-lg"
@@ -72,7 +76,6 @@ const PetListDemo = () => {
                   <td className="px-6 py-4">{pet.especie}</td>
                   <td className="px-6 py-4">{pet.edad}</td>
                   <td className="px-6 py-4">{pet.dueno}</td>
-
                   <td className="px-6 py-4">
                     <span
                       className={`px-2 py-1 text-xs rounded-full ${
@@ -84,20 +87,25 @@ const PetListDemo = () => {
                       {pet.estado}
                     </span>
                   </td>
-
                   <td className="px-6 py-4 flex gap-2">
-                    <Link
-                      to={`/vermascota/${pet.id}`}
+                    <button
+                      onClick={() => {
+                        setSelectedPetId(pet.id);
+                        setOpenModalVer(true);
+                      }}
                       className="bg-blue-600 hover:bg-blue-700 text-white px-3 py-1 rounded"
                     >
                       Ver
-                    </Link>
-                    <Link
-                      to={`/editarmascota/${pet.id}`} 
+                    </button>
+                    <button
+                      onClick={() => {
+                        setSelectedPetId(pet.id);
+                        setOpenModalEditar(true);
+                      }}
                       className="bg-green-500 hover:bg-green-600 text-white px-3 py-1 rounded"
                     >
                       Editar
-                    </Link>
+                    </button>
                     <button
                       onClick={() => handleDelete(pet.id)}
                       className="bg-red-500 hover:bg-red-600 text-white px-3 py-1 rounded"
@@ -107,7 +115,6 @@ const PetListDemo = () => {
                   </td>
                 </tr>
               ))}
-
               {pets.length === 0 && (
                 <tr>
                   <td colSpan="8" className="text-center py-4 text-gray-500">
@@ -119,6 +126,34 @@ const PetListDemo = () => {
           </table>
         </div>
       </div>
+
+      {openModalAgregar && (
+        <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50">
+          <div className="bg-white rounded-xl shadow-xl p-6 w-[90%] max-w-3xl relative">
+            <button
+              className="absolute top-2 right-2 text-gray-500 text-xl font-bold"
+              onClick={() => setOpenModalAgregar(false)}
+            >
+              ×
+            </button>
+            <AgregarMascota onClose={() => setOpenModalAgregar(false)} />
+          </div>
+        </div>
+      )}
+
+      {openModalVer && selectedPetId && (
+        <VerMascotaModal
+          id={selectedPetId}
+          onClose={() => setOpenModalVer(false)}
+        />
+      )}
+
+      {openModalEditar && selectedPetId && (
+        <EditarMascotaModal
+          id={selectedPetId}
+          onClose={() => setOpenModalEditar(false)}
+        />
+      )}
     </div>
   );
 };

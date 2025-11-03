@@ -1,11 +1,8 @@
 import { useState, useEffect } from "react";
-import { useParams, Link, useNavigate } from "react-router-dom";
 import { db } from "../../firebase";
 import { doc, getDoc, updateDoc } from "firebase/firestore";
 
-export default function EditarMascota() {
-  const { id } = useParams();
-  const navigate = useNavigate();
+export default function EditarMascotaModal({ id, onClose }) {
   const [formData, setFormData] = useState(null);
   const [loading, setLoading] = useState(true);
 
@@ -29,7 +26,7 @@ export default function EditarMascota() {
           setFormData({ id: snap.id, ...snap.data() });
         } else {
           alert("Mascota no encontrada");
-          navigate("/mascota");
+          if (onClose) onClose();
         }
       } catch (err) {
         console.error("Error al obtener mascota:", err);
@@ -38,7 +35,7 @@ export default function EditarMascota() {
       }
     };
     fetchPet();
-  }, [id, navigate]);
+  }, [id, onClose]);
 
   const handleInputChange = (e) => {
     const { name, value } = e.target;
@@ -51,8 +48,8 @@ export default function EditarMascota() {
   const handleUpdate = async () => {
     try {
       await updateDoc(doc(db, "mascotas", id), formData);
-      alert("Mascota actualizada ✅");
-      navigate("/mascota");
+      alert("Mascota actualizada ");
+      if (onClose) onClose();
     } catch (err) {
       console.error("Error al actualizar:", err);
     }
@@ -61,32 +58,30 @@ export default function EditarMascota() {
   if (!formData) return null;
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-blue-50 to-indigo-100 p-6">
-      <div className="max-w-3xl mx-auto">
-        <div className="mb-6 flex justify-between items-center">
-          <h1 className="text-3xl font-extrabold text-gray-800">
-            Editar Mascota 
-          </h1>
-          <Link
-            to="/mascota"
-            className="bg-red-500 hover:bg-red-600 transition text-white px-4 py-2 rounded-lg shadow"
-          >
-            Volver al listado
-          </Link>
-        </div>
+    <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50">
+      <div className="bg-white rounded-xl shadow-xl p-6 w-[90%] max-w-3xl relative">
+        <button
+          className="absolute top-2 right-2 text-gray-500 text-xl font-bold"
+          onClick={onClose}
+        >
+          ×
+        </button>
 
-        <div className="bg-white rounded-2xl shadow-xl p-8 space-y-6">
-          
+        <h1 className="text-3xl font-bold text-center text-gray-800 mb-6">
+          Editar Mascota
+        </h1>
+
+        <div className="space-y-4">
           <div>
             <label className="block text-sm font-semibold text-gray-700 mb-2">
-              Nombre de la mascota
+              Nombre
             </label>
             <input
               type="text"
               name="nombre"
               value={formData.nombre}
               onChange={handleInputChange}
-              className="w-full px-4 py-3 border rounded-lg focus:ring-2 focus:ring-blue-400 outline-none"
+              className="w-full px-4 py-3 border rounded-lg"
             />
           </div>
 
@@ -98,7 +93,7 @@ export default function EditarMascota() {
               name="especie"
               value={formData.especie}
               onChange={handleInputChange}
-              className="w-full px-4 py-3 border rounded-lg focus:ring-2 focus:ring-blue-400 outline-none"
+              className="w-full px-4 py-3 border rounded-lg"
             >
               <option value="">Selecciona una especie</option>
               {especies.map((esp) => (
@@ -109,8 +104,6 @@ export default function EditarMascota() {
             </select>
           </div>
 
-         
-
           <div>
             <label className="block text-sm font-semibold text-gray-700 mb-2">
               Edad
@@ -120,7 +113,7 @@ export default function EditarMascota() {
               name="edad"
               value={formData.edad}
               onChange={handleInputChange}
-              className="w-full px-4 py-3 border rounded-lg focus:ring-2 focus:ring-blue-400 outline-none"
+              className="w-full px-4 py-3 border rounded-lg"
             />
           </div>
 
@@ -133,7 +126,7 @@ export default function EditarMascota() {
               name="dueno"
               value={formData.dueno}
               onChange={handleInputChange}
-              className="w-full px-4 py-3 border rounded-lg focus:ring-2 focus:ring-blue-400 outline-none"
+              className="w-full px-4 py-3 border rounded-lg"
             />
           </div>
 
@@ -145,7 +138,7 @@ export default function EditarMascota() {
               name="estado"
               value={formData.estado}
               onChange={handleInputChange}
-              className="w-full px-4 py-3 border rounded-lg focus:ring-2 focus:ring-blue-400 outline-none"
+              className="w-full px-4 py-3 border rounded-lg"
             >
               <option value="activo">Activo</option>
               <option value="inactivo">Inactivo</option>
@@ -154,14 +147,14 @@ export default function EditarMascota() {
 
           <div className="flex justify-end gap-4 pt-4">
             <button
-              onClick={() => navigate("/mascota")}
-              className="bg-gray-300 hover:bg-gray-400 transition text-gray-800 px-6 py-3 rounded-lg shadow"
+              onClick={onClose}
+              className="bg-gray-300 hover:bg-gray-400 px-6 py-3 rounded-lg"
             >
               Cancelar
             </button>
             <button
               onClick={handleUpdate}
-              className="bg-green-500 hover:bg-green-600 transition text-white px-6 py-3 rounded-lg shadow"
+              className="bg-green-500 hover:bg-green-600 text-white px-6 py-3 rounded-lg"
             >
               Guardar cambios
             </button>
