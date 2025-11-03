@@ -1,9 +1,8 @@
 import { useState } from "react";
-import { Link, useNavigate } from "react-router-dom";
 import { db } from "../../firebase";
 import { collection, addDoc } from "firebase/firestore";
 
-export default function AgregarMascota() {
+export default function AgregarMascota({ onClose }) {
   const [formData, setFormData] = useState({
     foto: "",
     nombre: "",
@@ -16,7 +15,6 @@ export default function AgregarMascota() {
   });
 
   const [errors, setErrors] = useState({});
-  const navigate = useNavigate();
 
   const especies = [
     "Perro",
@@ -31,16 +29,10 @@ export default function AgregarMascota() {
 
   const handleInputChange = (e) => {
     const { name, value } = e.target;
-    setFormData((prev) => ({
-      ...prev,
-      [name]: value,
-    }));
+    setFormData((prev) => ({ ...prev, [name]: value }));
 
     if (errors[name]) {
-      setErrors((prev) => ({
-        ...prev,
-        [name]: "",
-      }));
+      setErrors((prev) => ({ ...prev, [name]: "" }));
     }
   };
 
@@ -49,8 +41,7 @@ export default function AgregarMascota() {
     if (!formData.nombre.trim()) newErrors.nombre = "El nombre es obligatorio";
     if (!formData.especie) newErrors.especie = "Debes seleccionar una especie";
     if (!formData.edad.trim()) newErrors.edad = "La edad es obligatoria";
-    if (!formData.dueno.trim())
-      newErrors.dueno = "El nombre del dueño es obligatorio";
+    if (!formData.dueno.trim()) newErrors.dueno = "El nombre del dueño es obligatorio";
     setErrors(newErrors);
     return Object.keys(newErrors).length === 0;
   };
@@ -65,7 +56,7 @@ export default function AgregarMascota() {
           createdAt: new Date(),
         });
 
-        navigate("/mascota");
+        if (onClose) onClose();
       } catch (error) {
         console.error("Error al guardar mascota:", error);
       }
@@ -76,12 +67,6 @@ export default function AgregarMascota() {
     <div className="min-h-screen bg-gray-50 p-6">
       <div className="max-w-3xl mx-auto">
         <div className="mb-8">
-          <Link
-            to="/mascota"
-            className="bg-red-400 hover:bg-red-700 text-white px-4 py-2 rounded-lg"
-          >
-            Volver al listado
-          </Link>
           <h1 className="text-4xl font-bold text-gray-800 mt-4">
             Agregar Nueva Mascota
           </h1>
@@ -90,10 +75,7 @@ export default function AgregarMascota() {
           </p>
         </div>
 
-        <form
-          onSubmit={handleSubmit}
-          className="bg-white rounded-lg shadow-lg p-8 space-y-6"
-        >
+        <form onSubmit={handleSubmit} className="bg-white rounded-lg shadow-lg p-8 space-y-6">
           <div>
             <label className="block text-sm font-semibold text-gray-700 mb-2">
               Nombre
@@ -103,14 +85,10 @@ export default function AgregarMascota() {
               name="nombre"
               value={formData.nombre}
               onChange={handleInputChange}
-              className={`w-full px-4 py-3 border rounded-lg ${
-                errors.nombre ? "border-red-500" : "border-gray-300"
-              }`}
+              className={`w-full px-4 py-3 border rounded-lg ${errors.nombre ? "border-red-500" : "border-gray-300"}`}
               placeholder="Ej: Max, Luna..."
             />
-            {errors.nombre && (
-              <p className="text-red-500 text-sm">{errors.nombre}</p>
-            )}
+            {errors.nombre && <p className="text-red-500 text-sm">{errors.nombre}</p>}
           </div>
 
           <div>
@@ -121,20 +99,14 @@ export default function AgregarMascota() {
               name="especie"
               value={formData.especie}
               onChange={handleInputChange}
-              className={`w-full px-4 py-3 border rounded-lg ${
-                errors.especie ? "border-red-500" : "border-gray-300"
-              }`}
+              className={`w-full px-4 py-3 border rounded-lg ${errors.especie ? "border-red-500" : "border-gray-300"}`}
             >
               <option value="">Selecciona una especie</option>
               {especies.map((esp) => (
-                <option key={esp} value={esp}>
-                  {esp}
-                </option>
+                <option key={esp} value={esp}>{esp}</option>
               ))}
             </select>
-            {errors.especie && (
-              <p className="text-red-500 text-sm">{errors.especie}</p>
-            )}
+            {errors.especie && <p className="text-red-500 text-sm">{errors.especie}</p>}
           </div>
 
           <div>
@@ -146,14 +118,10 @@ export default function AgregarMascota() {
               name="edad"
               value={formData.edad}
               onChange={handleInputChange}
-              className={`w-full px-4 py-3 border rounded-lg ${
-                errors.edad ? "border-red-500" : "border-gray-300"
-              }`}
+              className={`w-full px-4 py-3 border rounded-lg ${errors.edad ? "border-red-500" : "border-gray-300"}`}
               placeholder="Ej: 3 años, 6 meses..."
             />
-            {errors.edad && (
-              <p className="text-red-500 text-sm">{errors.edad}</p>
-            )}
+            {errors.edad && <p className="text-red-500 text-sm">{errors.edad}</p>}
           </div>
 
           <div>
@@ -165,14 +133,10 @@ export default function AgregarMascota() {
               name="dueno"
               value={formData.dueno}
               onChange={handleInputChange}
-              className={`w-full px-4 py-3 border rounded-lg ${
-                errors.dueno ? "border-red-500" : "border-gray-300"
-              }`}
+              className={`w-full px-4 py-3 border rounded-lg ${errors.dueno ? "border-red-500" : "border-gray-300"}`}
               placeholder="Ej: Juan Pérez..."
             />
-            {errors.dueno && (
-              <p className="text-red-500 text-sm">{errors.dueno}</p>
-            )}
+            {errors.dueno && <p className="text-red-500 text-sm">{errors.dueno}</p>}
           </div>
 
           <div>
@@ -191,18 +155,19 @@ export default function AgregarMascota() {
           </div>
 
           <div className="flex gap-4 pt-6">
-            <button
-              type="submit"
-              className="flex-1 bg-blue-500 hover:bg-blue-600 text-white py-3 rounded-lg"
-            >
+            <button 
+            type="submit" 
+            
+             className="flex-1 bg-blue-500 hover:bg-blue-600 text-white py-3 rounded-lg">
               Guardar Mascota
             </button>
-            <Link
-              to="/mascota"
-              className="flex-1 bg-gray-200 hover:bg-gray-300 text-gray-800 py-3 rounded-lg text-center"
+            <button
+              type="button"
+              onClick={onClose}
+              className="flex-1 bg-gray-200 hover:bg-gray-300 text-gray-800 py-3 rounded-lg"
             >
               Cancelar
-            </Link>
+            </button>
           </div>
         </form>
       </div>

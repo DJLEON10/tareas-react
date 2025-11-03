@@ -1,61 +1,47 @@
-import { useParams, Link, useNavigate } from "react-router-dom";
 import { useState, useEffect } from "react";
 import { db } from "../../firebase";
-import { doc, getDoc, deleteDoc } from "firebase/firestore";
+import { doc, getDoc } from "firebase/firestore";
 
-export default function VerMascota() {
-  const { id } = useParams();
-  const navigate = useNavigate();
+export default function VerMascotaModal({ id, onClose }) {
   const [pet, setPet] = useState(null);
-  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     const fetchPet = async () => {
       try {
-        const ref = doc(db, "mascotas", id);
-        const snap = await getDoc(ref);
+        const snap = await getDoc(doc(db, "mascotas", id));
         if (snap.exists()) {
           setPet({ id: snap.id, ...snap.data() });
         } else {
-          alert("Mascota no encontrada ❌");
-          navigate("/mascota");
+          alert("Mascota no encontrada ");
+          if (onClose) onClose();
         }
       } catch (err) {
         console.error("Error al obtener mascota:", err);
-      } finally {
-        setLoading(false);
       }
     };
     fetchPet();
-  }, [id, navigate]);
-
-  const handleDelete = async () => {
-    if (window.confirm(`¿Seguro que quieres eliminar a ${pet.nombre}?`)) {
-      try {
-        await deleteDoc(doc(db, "mascotas", id));
-        alert("Mascota eliminada ✅");
-        navigate("/mascota");
-      } catch (err) {
-        console.error("Error al eliminar:", err);
-      }
-    }
-  };
-
-  
+  }, [id, onClose]);
 
   if (!pet) return null;
 
+  const handleBackgroundClick = (e) => {
+    if (e.target === e.currentTarget && onClose) {
+      onClose();
+    }
+  };
+
   return (
-    <div className="min-h-screen bg-gray-50 p-6">
-      <div className="max-w-2xl mx-auto bg-white shadow-lg rounded-lg p-6">
-        <div className="mb-4">
-        <Link
-            to="/mascota"
-            className="bg-red-500 hover:bg-red-600 transition text-white px-4 py-2 rounded-lg shadow"
-          >
-            Volver al listado
-          </Link>
-        </div>
+    <div
+      className="fixed inset-0 bg-black/50 flex items-center justify-center z-50"
+      onClick={handleBackgroundClick}
+    >
+      <div className="bg-white p-6 rounded-xl shadow-xl w-[90%] max-w-2xl relative">
+        <button
+          className="absolute top-3 right-3 text-gray-500 text-xl font-bold hover:text-gray-800"
+          onClick={onClose}
+        >
+          ×
+        </button>
 
         <h1 className="text-3xl font-bold text-center text-gray-800 mb-6">
           Detalles de la Mascota
@@ -81,8 +67,6 @@ export default function VerMascota() {
             }
           />
         </div>
-
-        
       </div>
     </div>
   );
