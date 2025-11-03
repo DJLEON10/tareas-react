@@ -1,8 +1,15 @@
 // Login.jsx
 import { Link, useNavigate } from "react-router-dom";
 import { useState } from "react";
-import { signInWithEmailAndPassword, signInWithPopup, FacebookAuthProvider, GoogleAuthProvider } from "firebase/auth";
+import { 
+  signInWithEmailAndPassword, 
+  signInWithPopup, 
+  FacebookAuthProvider, 
+  GoogleAuthProvider, 
+  linkWithPopup 
+} from "firebase/auth";
 import { auth, githubProvider } from "../../firebase";
+import Swal from "sweetalert2"; // 👈 agregado para mostrar alertas bonitas
 
 export default function Login() {
   const [email, setEmail] = useState("");
@@ -10,6 +17,7 @@ export default function Login() {
   const [error, setError] = useState("");
   const navigate = useNavigate();
 
+  // ✅ Iniciar sesión normal con correo y contraseña
   const handleSubmit = async (e) => {
     e.preventDefault();
 
@@ -27,6 +35,7 @@ export default function Login() {
     }
   };
 
+  // ✅ Iniciar sesión con GitHub
   const handleGithubLogin = async () => {
     try {
       await signInWithPopup(auth, githubProvider);
@@ -36,9 +45,10 @@ export default function Login() {
       setError("Error al iniciar sesión con GitHub");
     }
   };
+
+  // ✅ Iniciar sesión con Google
   const handleGoogleLogin = async () => {
     const provider = new GoogleAuthProvider();
-
     try {
       const result = await signInWithPopup(auth, provider);
       const user = result.user;
@@ -50,6 +60,7 @@ export default function Login() {
     }
   };
 
+  // ✅ Iniciar sesión con Facebook
   const handleFacebookLogin = async () => {
     const provider = new FacebookAuthProvider();
     try {
@@ -60,6 +71,43 @@ export default function Login() {
     } catch (error) {
       console.error("Error al iniciar sesión con Facebook:", error);
       setError("No se pudo iniciar sesión con Facebook");
+    }
+  };
+
+  // ✅ Nueva función: Vincular cuentas con distintos proveedores
+  const handleLinkAccount = async (providerType) => {
+    try {
+      let provider;
+
+      switch (providerType) {
+        case "google":
+          provider = new GoogleAuthProvider();
+          break;
+        case "facebook":
+          provider = new FacebookAuthProvider();
+          break;
+        case "github":
+          provider = githubProvider;
+          break;
+        default:
+          return;
+      }
+
+      const result = await linkWithPopup(auth.currentUser, provider);
+      console.log("Proveedores vinculados:", result.user.providerData);
+      Swal.fire("Cuenta vinculada correctamente!", "", "success");
+    } catch (error) {
+      if (error.code === "auth/provider-already-linked") {
+        Swal.fire("Error", "Tu cuenta ya está vinculada con este proveedor.", "error");
+      } else if (error.code === "auth/account-exists-with-different-credential") {
+        Swal.fire(
+          "Ya existe una cuenta con ese correo",
+          "Inicia sesión con ese proveedor y luego vincula el actual.",
+          "info"
+        );
+      } else {
+        Swal.fire("Error al vincular cuenta", error.message, "error");
+      }
     }
   };
 
@@ -99,13 +147,13 @@ export default function Login() {
           >
             Iniciar Sesión
           </button>
+
           <div className="mt-4">
             <button
               type="button"
               onClick={handleGoogleLogin}
               className="w-full flex items-center justify-center gap-2 bg-white border border-gray-300 py-2 rounded-md shadow-sm hover:bg-gray-100 transition"
             >
-             
               <span className="text-gray-700 font-medium">Iniciar con Google</span>
             </button>
           </div>
@@ -121,7 +169,6 @@ export default function Login() {
           </button>
         </div>
 
-        {/* Login con Facebook */}
         <div className="mt-4">
           <button
             onClick={handleFacebookLogin}
@@ -131,7 +178,7 @@ export default function Login() {
             Iniciar con Facebook
           </button>
         </div>
-
+        
         <p className="text-center mt-4 text-sm">
           <Link to="/forgotpassword" className="text-[#2d7a6b] font-medium">
             ¿Olvidaste tu contraseña?
