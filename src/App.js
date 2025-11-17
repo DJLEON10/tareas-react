@@ -35,6 +35,8 @@ import EditarMascota from "./pages/mascota-page/editarmascota";
 import VerMascota from "./pages/mascota-page/vermascota";
 import Sidebar from "./components/sidebar-page/Sidebar";
 import ForgotPassword from "./pages/resetpassword-pages/ForgotPassword";
+import Historial from "./components/history-page/Historial";
+
 
 function App() {
   return (
@@ -76,6 +78,8 @@ function App() {
         <Route path="/editarmascota/:id" element={<EditarMascota />}></Route>
         <Route path="/vermascota/:id" element={<VerMascota />}></Route>
         <Route path="/forgotpassword" element={<ForgotPassword />}></Route>
+        <Route path="/historial" element={<Historial />}></Route>
+
 
 
 
