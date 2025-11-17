@@ -1,205 +1,71 @@
-# Getting Started with Create React App
+# PetSys
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+Sistema de gestión para veterinarias
 
-## Available Scripts
+## 🚀 Tecnologías
 
-In the project directory, you can run:
+- JavaScript
+- React
+- Firebase
+- Tailwind
 
-### `npm start`
+## ✨ Características
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in your browser.
+- Gestión de mascotas
+- Gestión de medicamentos  
+- Gestión de veterinarios
+- Inicio de sesión con Google, GitHub y Facebook
 
-The page will reload when you make changes.\
-You may also see any lint errors in the console.
+## 📥 Instalación / Configuración local
 
-### `npm test`
+### Clonar el repositorio:
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+git clone https://github.com/DJLEON10/tareas-react.git
 
-### `npm run build`
+### Instalar dependencias:
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
+npm install
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
+### Iniciar la aplicación:
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+npm start
 
-### `npm run eject`
+La app se ejecutará en http://localhost:3000.
 
-**Note: this is a one-way operation. Once you `eject`, you can't go back!**
+## 🌐 Despliegue
+Desplegado en Firebase (configuración genérica).
 
-If you aren't satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
+## 📸 Capturas de pantalla
 
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you're on your own.
+### Registro
+<img width="1360" height="631" alt="image" src="https://github.com/user-attachments/assets/c8943267-0450-4c67-88ec-4aa90e739e75" />
 
-You don't have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn't feel obligated to use this feature. However we understand that this tool wouldn't be useful if you couldn't customize it when you are ready for it.
+### Inicio de Sesion
+<img width="1349" height="636" alt="image" src="https://github.com/user-attachments/assets/abdd378c-d58e-47d4-8999-4e04cb71e28b" />
 
-## Learn More
+### Vista de mascotas
+<img width="1361" height="634" alt="image" src="https://github.com/user-attachments/assets/eaf31161-3a6e-4457-97f3-009da48caebd" />
 
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
+### Vista de medicamentos
+<img width="1364" height="627" alt="image" src="https://github.com/user-attachments/assets/2ed04655-45ab-4128-b7ce-fe3cc934f61a" />
 
-To learn React, check out the [React documentation](https://reactjs.org/).
+### Vista de historial de usuarios
 
-### Code Splitting
+<img width="1006" height="452" alt="image" src="https://github.com/user-attachments/assets/a5192c3c-4ec8-4efb-91a0-dc5ce0be4c47" />
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/code-splitting](https://facebook.github.io/create-react-app/docs/code-splitting)
-
-### Analyzing the Bundle Size
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size](https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size)
-
-### Making a Progressive Web App
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app](https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app)
-
-### Advanced Configuration
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/advanced-configuration](https://facebook.github.io/create-react-app/docs/advanced-configuration)
-
-### Deployment
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/deployment](https://facebook.github.io/create-react-app/docs/deployment)
-
-### `npm run build` fails to minify
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
+### Vista de veterinarios
+<img width="1356" height="630" alt="image" src="https://github.com/user-attachments/assets/3bcff4d3-2d5e-4a05-9a81-17a2c7d5efac" />
 
 
+## Configuración Inicio de sesion Facebook
 
-#dependencias o paquetes 
-*npm install firebase
-*nom install react-firebase-hooks
-*npm install tailwind-c
-*npm install react-router-dom 
-*npm install sweetalert2
+https://firebase.google.com/docs/auth/web/facebook-login?hl=es-419 
 
+## Configuración Inicio de sesion Google
 
+https://firebase.google.com/docs/auth/web/google-signin?hl=es-419
 
+## Configuración Inicio de sesion GitHub
 
-export default function Register() {
-  const navigate = useNavigate();
+https://firebase.google.com/docs/auth/web/github-auth?hl=es-419
 
-  // UN SOLO ESTADO para manejar todos los datos del formulario
-  const [formData, setFormData] = useState({
-    nombre: "", // Cambié de "nombres" a "nombre"
-    apellido: "",
-    email: "",
-    password: "",
-    confirmPassword: "",
-  });
-
-  const [error, setError] = useState("");
-
-  useEffect(() => {
-    if (formData.confirmPassword.length > 0) {
-      if (formData.password !== formData.confirmPassword) {
-        setError("Las contraseñas no coinciden");
-      } else {
-        setError(""); // si son iguales se limpia
-      }
-    }
-  }, [formData.password, formData.confirmPassword]);
-
-  const handleSubmit = async (e) => {
-    e.preventDefault();
-    
-    // Extraemos los datos del formData
-    const { nombre, apellido, email, password, confirmPassword } = formData;
-
-    // Validación de campos obligatorios
-    if (!nombre || !apellido || !email || !password || !confirmPassword) {
-      setError("Todos los campos son obligatorios");
-      return;
-    }
-
-    // Validación de contraseñas
-    if (password !== confirmPassword) {
-      setError("Las contraseñas no coinciden");
-      return;
-    }
-
-    // Validación de longitud de contraseña
-    if (password.length < 6) {
-      Swal.fire({
-        icon: "error",
-        title: "Error",
-        text: "La contraseña debe tener al menos 6 caracteres"
-      });
-      return;
-    }
-
-    setError("");
-
-    try {
-      const emaillower = email.toLowerCase();
-      
-      // Crear usuario en Firebase Authentication
-      const userMethod = await createUserWithEmailAndPassword(auth, emaillower, password);
-      const user = userMethod.user;
-
-      // Guardar datos en Firestore
-      await setDoc(doc(db, "usuarios", user.uid), {
-        uid: user.uid,
-        nombre,
-        apellido,
-        email: emaillower,
-        password, // Nota: en producción no deberías guardar la contraseña en texto plano
-        estado: "pendiente",
-        rol: "visitante",
-        creado: new Date(),
-        metodo: "password"
-      });
-
-      // Mostrar mensaje de éxito y navegar DESPUÉS del registro exitoso
-      Swal.fire({
-        icon: "success",
-        title: "¡Éxito!",
-        text: "Usuario registrado con éxito 🎉"
-      }).then(() => {
-        navigate("/login");
-      });
-
-    } catch (error) {
-      console.error("Error de registro:", error);
-
-      if (error.code === "auth/email-already-in-use") {
-        Swal.fire({
-          icon: "error",
-          title: "Correo en uso",
-          text: "Debe ingresar otro correo electrónico"
-        });
-      } else if (error.code === "auth/weak-password") {
-        Swal.fire({
-          icon: "error",
-          title: "Contraseña débil",
-          text: "La contraseña debe tener al menos 6 caracteres"
-        });
-      } else if (error.code === "auth/invalid-email") {
-        Swal.fire({
-          icon: "error",
-          title: "Email inválido",
-          text: "Por favor ingrese un email válido"
-        });
-      } else {
-        Swal.fire({
-          icon: "error",
-          title: "Error",
-          text: "Ocurrió un error durante el registro. Intente nuevamente."
-        });
-      }
-    }
-  };
-
-  const handleChange = (e) => {
-    setFormData({
-      ...formData,
-      [e.target.name]: e.target.value,
-    });
-  };
-
-  
