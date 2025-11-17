@@ -1,4 +1,3 @@
-// Login.jsx
 import { Link, useNavigate } from "react-router-dom";
 import { useState } from "react";
 import { 
@@ -6,9 +5,12 @@ import {
   signInWithPopup, 
   FacebookAuthProvider, 
   GoogleAuthProvider, 
+  linkWithCredential, 
+  fetchSignInMethodsForEmail,
   linkWithPopup 
 } from "firebase/auth";
-import { auth, githubProvider } from "../../firebase";
+import { auth, githubProvider, db } from "../../firebase";
+import { doc, setDoc, arrayUnion } from "firebase/firestore";
 import Swal from "sweetalert2";
 
 export default function Login() {
@@ -17,7 +19,24 @@ export default function Login() {
   const [error, setError] = useState("");
   const navigate = useNavigate();
 
-  // ✅ Iniciar sesión normal con correo y contraseña
+  // Función para guardar el método de autenticación y hora de entrada
+  const saveAuthMethod = async (userId, method) => {
+    try {
+      const userRef = doc(db, "usuarios", userId);
+      const ahora = new Date().toISOString();
+      
+      await setDoc(userRef, {
+        metodosAuth: arrayUnion(method),
+        horaEntrada: ahora,  // Solo guardamos entrada
+        horaSalida: null,    // IMPORTANTE: Limpiamos cualquier salida previa
+        estadoSesion: "Activa"
+      }, { merge: true });
+      
+    } catch (error) {
+      console.error("Error al guardar método de autenticación:", error);
+    }
+  };
+
   const handleSubmit = async (e) => {
     e.preventDefault();
 
@@ -27,7 +46,8 @@ export default function Login() {
     }
 
     try {
-      await signInWithEmailAndPassword(auth, email, password);
+      const userCredential = await signInWithEmailAndPassword(auth, email, password);
+      await saveAuthMethod(userCredential.user.uid, "password");
       navigate("/sidebar");
     } catch (err) {
       console.log(err);
@@ -35,46 +55,222 @@ export default function Login() {
     }
   };
 
-  // ✅ Iniciar sesión con GitHub
-  const handleGithubLogin = async () => {
-    try {
-      await signInWithPopup(auth, githubProvider);
-      navigate("/sidebar");
-    } catch (error) {
-      console.log(error);
-      setError("Error al iniciar sesión con GitHub");
+  const handleAccountExists = async (error) => {
+    const email = error.customData?.email;
+    const pendingCred = error.credential;
+
+    if (!email) {
+      setError("Error desconocido en autenticación");
+      return;
     }
+
+    const methods = await fetchSignInMethodsForEmail(auth, email);
+    const existingProvider = methods[0];
+
+    let provider;
+    if (existingProvider === "google.com") provider = new GoogleAuthProvider();
+    if (existingProvider === "facebook.com") provider = new FacebookAuthProvider();
+    if (existingProvider === "github.com") provider = githubProvider;
+
+    if (!provider) {
+      setError("Ya existe una cuenta con este correo.");
+      return;
+    }
+
+    const existingResult = await signInWithPopup(auth, provider);
+    await linkWithCredential(existingResult.user, pendingCred);
+
+    Swal.fire("Cuentas vinculadas correctamente", "", "success");
+    navigate("/sidebar");
   };
 
-  // ✅ Iniciar sesión con Google
-  const handleGoogleLogin = async () => {
-    const provider = new GoogleAuthProvider();
-    try {
+const handleGithubLogin = async () => {
+  try {
+    // Si no hay usuario logueado, intentar login directo
+    if (!auth.currentUser) {
+      const result = await signInWithPopup(auth, githubProvider);
+      await saveAuthMethod(result.user.uid, "github");
+      console.log("Inicio de sesión / registro con GitHub:", result.user);
+      Swal.fire("Bienvenido", "Inicio de sesión con GitHub exitoso", "success");
+      navigate("/sidebar");
+      return;
+    }
+
+    // Si hay usuario logueado, verificar si GitHub ya está vinculado
+    const providerData = auth.currentUser.providerData;
+    const isGithubLinked = providerData.some(provider => provider.providerId === "github.com");
+
+    if (isGithubLinked) {
+      // Ya está vinculado, solo hacer login
+      const result = await signInWithPopup(auth, githubProvider);
+      await saveAuthMethod(result.user.uid, "github");
+      console.log("Login con GitHub (ya vinculado):", result.user);
+      Swal.fire("Bienvenido", "Inicio de sesión con GitHub exitoso", "success");
+      navigate("/sidebar");
+      return;
+    }
+
+    // No está vinculado, vincular ahora
+    const linkResult = await linkWithPopup(auth.currentUser, githubProvider);
+    await saveAuthMethod(linkResult.user.uid, "github");
+    console.log("GitHub vinculado:", linkResult.user);
+    Swal.fire("Éxito", "Cuenta de GitHub vinculada", "success");
+    navigate("/sidebar");
+
+  } catch (error) {
+    console.error("Error GitHub:", error);
+
+    if (error.code === "auth/credential-already-in-use" ||
+        error.code === "auth/account-exists-with-different-credential") {
+
+      const login = await signInWithPopup(auth, githubProvider);
+      await saveAuthMethod(login.user.uid, "github");
+      Swal.fire("Listo", "Inicio de sesión exitoso", "success");
+      navigate("/sidebar");
+      return;
+    }
+
+    Swal.fire("Error", error.message, "error");
+  }
+};
+
+
+const handleGoogleLogin = async () => {
+  const provider = new GoogleAuthProvider();
+
+  try {
+    // Si no hay usuario logueado, intentar login directo
+    if (!auth.currentUser) {
       const result = await signInWithPopup(auth, provider);
-      const user = result.user;
-      console.log("Usuario con Google:", user);
+      await saveAuthMethod(result.user.uid, "google");
+      console.log("Inicio con Google:", result.user);
       navigate("/sidebar");
-    } catch (error) {
-      console.error("Error al iniciar sesión con Google:", error);
-      setError("No se pudo iniciar sesión con Google");
+      return;
     }
-  };
 
-  // ✅ Iniciar sesión con Facebook
-  const handleFacebookLogin = async () => {
-    const provider = new FacebookAuthProvider();
-    try {
+    // Si hay usuario logueado, verificar si Google ya está vinculado
+    const providerData = auth.currentUser.providerData;
+    const isGoogleLinked = providerData.some(p => p.providerId === "google.com");
+
+    if (isGoogleLinked) {
+      // Ya está vinculado, solo hacer login
       const result = await signInWithPopup(auth, provider);
-      const user = result.user;
-      console.log("Usuario con Facebook:", user);
+      await saveAuthMethod(result.user.uid, "google");
+      console.log("Login con Google (ya vinculado):", result.user);
       navigate("/sidebar");
-    } catch (error) {
-      console.error("Error al iniciar sesión con Facebook:", error);
-      setError("No se pudo iniciar sesión con Facebook");
+      return;
     }
-  };
 
-  // ✅ Nueva función: Vincular cuentas con distintos proveedores
+    // No está vinculado, vincular ahora
+    const linkResult = await linkWithPopup(auth.currentUser, provider);
+    await saveAuthMethod(linkResult.user.uid, "google");
+    console.log("Google vinculado:", linkResult.user.providerData);
+    navigate("/sidebar");
+
+  } catch (error) {
+    console.error("Error Google:", error);
+
+    if (error.code === "auth/provider-already-linked") {
+      navigate("/sidebar");
+      return;
+    }
+
+    if (error.code === "auth/credential-already-in-use" ||
+        error.code === "auth/account-exists-with-different-credential") {
+      const login = await signInWithPopup(auth, provider);
+      await saveAuthMethod(login.user.uid, "google");
+      navigate("/sidebar");
+      return;
+    }
+
+    console.error("Error al iniciar sesión con Google:", error);
+  }
+};
+
+
+const handleFacebookLogin = async () => {
+  const provider = new FacebookAuthProvider();
+
+  try {
+    // Si no hay usuario logueado, intentar login directo
+    if (!auth.currentUser) {
+      const result = await signInWithPopup(auth, provider);
+      await saveAuthMethod(result.user.uid, "facebook");
+      console.log("Inicio con Facebook:", result.user);
+      Swal.fire("Bienvenido", "Inicio de sesión con Facebook exitoso", "success");
+      navigate("/sidebar");
+      return;
+    }
+
+    // Si hay usuario logueado, verificar si Facebook ya está vinculado
+    const providerData = auth.currentUser.providerData;
+    const isFacebookLinked = providerData.some(p => p.providerId === "facebook.com");
+
+    if (isFacebookLinked) {
+      // Ya está vinculado, solo hacer login
+      const result = await signInWithPopup(auth, provider);
+      await saveAuthMethod(result.user.uid, "facebook");
+      console.log("Login con Facebook (ya vinculado):", result.user);
+      Swal.fire("Bienvenido", "Inicio de sesión con Facebook exitoso", "success");
+      navigate("/sidebar");
+      return;
+    }
+
+    // No está vinculado, vincular ahora
+    const linkResult = await linkWithPopup(auth.currentUser, provider);
+    await saveAuthMethod(linkResult.user.uid, "facebook");
+    console.log("Facebook vinculado:", linkResult.user.providerData);
+    Swal.fire("Éxito", "Cuenta de Facebook vinculada", "success");
+    navigate("/sidebar");
+
+  } catch (error) {
+    console.error("Error Facebook:", error);
+
+    if (error.code === "auth/provider-already-linked") {
+      navigate("/sidebar");
+      return;
+    }
+
+    if (
+      error.code === "auth/account-exists-with-different-credential" ||
+      error.code === "auth/credential-already-in-use"
+    ) {
+      const email = error.customData?.email;
+
+      if (!email) {
+        Swal.fire("Error", "No se pudo obtener el correo", "error");
+        return;
+      }
+
+      const methods = await fetchSignInMethodsForEmail(auth, email);
+
+      let existingProvider;
+      if (methods.includes("google.com")) existingProvider = new GoogleAuthProvider();
+      else if (methods.includes("github.com")) existingProvider = githubProvider;
+      else if (methods.includes("facebook.com")) existingProvider = new FacebookAuthProvider();
+
+      if (!existingProvider) {
+        Swal.fire("Error", "No se pudo identificar el proveedor existente", "error");
+        return;
+      }
+
+      const loginResult = await signInWithPopup(auth, existingProvider);
+      await saveAuthMethod(loginResult.user.uid, "facebook");
+
+      if (error.credential) {
+        await linkWithCredential(loginResult.user, error.credential);
+      }
+
+      Swal.fire("Listo", "Inicio de sesión exitoso", "success");
+      navigate("/sidebar");
+      return;
+    }
+
+    Swal.fire("Error", error.message, "error");
+  }
+};
+
+
   const handleLinkAccount = async (providerType) => {
     try {
       let provider;
@@ -182,7 +378,7 @@ export default function Login() {
             Iniciar con Facebook
           </button>
         </div>
-        
+
         <p className="text-center mt-4 sm:mt-5 text-xs sm:text-sm">
           <Link to="/forgotpassword" className="text-[#2d7a6b] font-medium hover:underline">
             ¿Olvidaste tu contraseña?
