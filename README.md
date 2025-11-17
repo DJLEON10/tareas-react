@@ -35,6 +35,13 @@ La app se ejecutará en http://localhost:3000.
 ## 🌐 Despliegue
 Desplegado en Firebase (configuración genérica).
 
+Link: https://primer-proyecto-b9242.web.app
+
+<img width="673" height="204" alt="image" src="https://github.com/user-attachments/assets/f1a2315b-303c-4fb6-b164-1113878a9faf" />
+
+<img width="788" height="247" alt="image" src="https://github.com/user-attachments/assets/11937a4a-a429-41ac-b9f8-408d19c4cd2b" />
+
+
 ## 📸 Capturas de pantalla
 
 ### Registro
