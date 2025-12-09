@@ -1,6 +1,8 @@
 import { useState, useEffect } from "react";
 import { collection, getDocs } from "firebase/firestore";
 import { db } from "../../firebase"; // Ajusta la ruta según tu proyecto
+import jsPDF from "jspdf";
+import autoTable from "jspdf-autotable";
 
 export default function UserHistory() {
   const [searchTerm, setSearchTerm] = useState("");
@@ -8,94 +10,118 @@ export default function UserHistory() {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   
-  // Función MEJORADA para calcular duración de sesión
+  // -------------------------------------------------
+  // EXPORTAR EXCEL
+  // -------------------------------------------------
+  const exportToExcel = () => {
+    import("xlsx").then((xlsx) => {
+      const dataToExport = filteredUsers.map((u) => ({
+        Nombre: u.nombre,
+        Email: u.email,
+        Métodos: u.metodosAuth.join(", "),
+        HoraEntrada: formatearFecha(u.horaEntrada),
+        HoraSalida: u.horaSalida ? formatearFecha(u.horaSalida) : "En sesión",
+        Duración: u.duracionSesion,
+        EstadoSesion: u.estadoSesion
+      }));
+
+      const worksheet = xlsx.utils.json_to_sheet(dataToExport);
+      const workbook = { Sheets: { data: worksheet }, SheetNames: ["data"] };
+      xlsx.writeFile(workbook, "usuarios_historial.xlsx");
+    });
+  };
+
+  // -------------------------------------------------
+  // EXPORTAR PDF
+  // -------------------------------------------------
+const exportToPDF = () => {
+  const doc = new jsPDF();
+
+  autoTable(doc, {
+    head: [
+      [
+        "Nombre",
+        "Email",
+        "Métodos",
+        "Entrada",
+        "Salida",
+        "Duración",
+        "Estado",
+      ],
+    ],
+    body: filteredUsers.map((u) => [
+      u.nombre,
+      u.email,
+      u.metodosAuth.join(", "),
+      formatearFecha(u.horaEntrada),
+      u.horaSalida ? formatearFecha(u.horaSalida) : "En sesión",
+      u.duracionSesion,
+      u.estadoSesion,
+    ]),
+    startY: 20,
+  });
+
+  doc.text("Historial de Usuarios", 14, 15);
+  doc.save("usuarios_historial.pdf");
+};
+
+
+
+  // -------------------------------------------------
+  // Calcular duración
+  // -------------------------------------------------
   const calcularDuracionSesion = (horaEntrada, horaSalida) => {
     if (!horaEntrada) return "Sin entrada";
     
     try {
-      // Convertir a Date, manejando diferentes formatos
       let entrada;
-      if (typeof horaEntrada === 'string') {
-        entrada = new Date(horaEntrada);
-      } else if (horaEntrada?.seconds) {
-        // Si es un Timestamp de Firebase
-        entrada = new Date(horaEntrada.seconds * 1000);
-      } else {
-        entrada = new Date(horaEntrada);
-      }
-      
-      // Si no hay hora de salida y la sesión está activa, calcular desde ahora
+
+      if (typeof horaEntrada === 'string') entrada = new Date(horaEntrada);
+      else if (horaEntrada?.seconds) entrada = new Date(horaEntrada.seconds * 1000);
+      else entrada = new Date(horaEntrada);
+
       let salida;
-      if (!horaSalida) {
-        salida = new Date();
-      } else if (typeof horaSalida === 'string') {
-        salida = new Date(horaSalida);
-      } else if (horaSalida?.seconds) {
-        // Si es un Timestamp de Firebase
-        salida = new Date(horaSalida.seconds * 1000);
-      } else {
-        salida = new Date(horaSalida);
-      }
-      
-      // Validar que las fechas sean válidas
+      if (!horaSalida) salida = new Date();
+      else if (typeof horaSalida === 'string') salida = new Date(horaSalida);
+      else if (horaSalida?.seconds) salida = new Date(horaSalida.seconds * 1000);
+      else salida = new Date(horaSalida);
+
       if (isNaN(entrada.getTime()) || isNaN(salida.getTime())) {
-        console.log("Fecha inválida:", { horaEntrada, horaSalida });
         return "Fecha inválida";
       }
-      
+
       const diff = salida - entrada;
-      
-      // Si la diferencia es negativa, mostrar el problema
-      if (diff < 0) {
-        console.warn("Hora de salida anterior a entrada:", {
-          entrada: entrada.toISOString(),
-          salida: salida.toISOString(),
-          diff
-        });
-        return "N/A";
-      }
-      
+      if (diff < 0) return "N/A";
+
       const dias = Math.floor(diff / (1000 * 60 * 60 * 24));
       const horas = Math.floor((diff % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
       const minutos = Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60));
       const segundos = Math.floor((diff % (1000 * 60)) / 1000);
-      
-      if (dias > 0) {
-        return `${dias}d ${horas}h ${minutos}m`;
-      } else if (horas > 0) {
-        return `${horas}h ${minutos}m`;
-      } else if (minutos > 0) {
-        return `${minutos}m ${segundos}s`;
-      } else {
-        return `${segundos}s`;
-      }
+
+      if (dias > 0) return `${dias}d ${horas}h ${minutos}m`;
+      if (horas > 0) return `${horas}h ${minutos}m`;
+      if (minutos > 0) return `${minutos}m ${segundos}s`;
+      return `${segundos}s`;
+
     } catch (error) {
-      console.error("Error calculando duración:", error, { horaEntrada, horaSalida });
       return "Error";
     }
   };
 
-  // Función para formatear fecha y hora
+  // -------------------------------------------------
+  // Formatear fechas
+  // -------------------------------------------------
   const formatearFecha = (fecha) => {
     if (!fecha) return "N/A";
     try {
       let fechaObj;
       
-      // Manejar diferentes tipos de datos de fecha
-      if (typeof fecha === 'string') {
-        fechaObj = new Date(fecha);
-      } else if (fecha?.seconds) {
-        // Si es un Timestamp de Firebase
-        fechaObj = new Date(fecha.seconds * 1000);
-      } else {
-        fechaObj = new Date(fecha);
-      }
-      
-      if (isNaN(fechaObj.getTime())) {
-        console.log("Fecha inválida:", fecha);
-        return "Fecha inválida";
-      }
-      
+      if (typeof fecha === 'string') fechaObj = new Date(fecha);
+      else if (fecha?.seconds) fechaObj = new Date(fecha.seconds * 1000);
+      else fechaObj = new Date(fecha);
+
+      if (isNaN(fechaObj.getTime())) return "Fecha inválida";
+
       return fechaObj.toLocaleString('es-ES', {
         year: 'numeric',
         month: '2-digit',
@@ -104,18 +130,20 @@ export default function UserHistory() {
         minute: '2-digit',
         second: '2-digit'
       });
-    } catch (error) {
-      console.error("Error formateando fecha:", error, fecha);
+    } catch {
       return "Error";
     }
   };
 
-  // Obtener usuarios de Firebase
+  // -------------------------------------------------
+  // Obtener usuarios
+  // -------------------------------------------------
   useEffect(() => {
     const fetchUsers = async () => {
       try {
         setLoading(true);
         const querySnapshot = await getDocs(collection(db, "usuarios"));
+
         const usersData = querySnapshot.docs.map(doc => {
           const data = doc.data();
           return {
@@ -131,10 +159,10 @@ export default function UserHistory() {
             fechaRegistro: data.fechaRegistro || data.creado || "N/A"
           };
         });
+
         setUsers(usersData);
         setError(null);
       } catch (err) {
-        console.error("Error al obtener usuarios:", err);
         setError("Error al cargar los usuarios. Intenta de nuevo.");
       } finally {
         setLoading(false);
@@ -142,8 +170,7 @@ export default function UserHistory() {
     };
 
     fetchUsers();
-    
-    // Actualizar duraciones cada 10 segundos para sesiones activas
+
     const interval = setInterval(() => {
       setUsers(prevUsers => 
         prevUsers.map(user => ({
@@ -152,19 +179,27 @@ export default function UserHistory() {
         }))
       );
     }, 10000);
-    
+
     return () => clearInterval(interval);
   }, []);
 
-  // Filtrar usuarios solo por nombre o email
+  // -------------------------------------------------
+  // Filtro
+  // -------------------------------------------------
   const filteredUsers = users.filter(user => {
-    return user.nombre.toLowerCase().includes(searchTerm.toLowerCase()) ||
-           user.email.toLowerCase().includes(searchTerm.toLowerCase());
+    return (
+      user.nombre.toLowerCase().includes(searchTerm.toLowerCase()) ||
+      user.email.toLowerCase().includes(searchTerm.toLowerCase())
+    );
   });
 
+  // -------------------------------------------------
+  // RENDER
+  // -------------------------------------------------
   return (
     <div className="min-h-screen bg-gray-50 p-4 md:p-8">
       <div className="max-w-7xl mx-auto">
+
         {/* Header */}
         <div className="mb-8">
           <h1 className="text-3xl md:text-4xl font-bold text-[#0d4f4c] mb-2">
@@ -175,7 +210,7 @@ export default function UserHistory() {
           </p>
         </div>
 
-        {/* Loading State */}
+        {/* Loading */}
         {loading && (
           <div className="bg-white rounded-lg shadow-md p-12 text-center">
             <div className="inline-block animate-spin rounded-full h-12 w-12 border-b-2 border-[#0d4f4c]"></div>
@@ -183,19 +218,20 @@ export default function UserHistory() {
           </div>
         )}
 
-        {/* Error State */}
+        {/* Error */}
         {error && (
           <div className="bg-red-50 border border-red-200 rounded-lg p-4 mb-6">
             <p className="text-red-800">{error}</p>
           </div>
         )}
 
-        {/* Content - Solo se muestra si no hay loading ni error */}
+        {/* CONTENIDO */}
         {!loading && !error && (
           <>
-            {/* Filtros y Búsqueda */}
+            {/* Filtros */}
             <div className="bg-white rounded-lg shadow-md p-4 md:p-6 mb-6">
               <div className="flex flex-col gap-4">
+
                 {/* Buscador */}
                 <div className="w-full">
                   <label className="block text-sm font-medium text-gray-700 mb-2">
@@ -209,9 +245,27 @@ export default function UserHistory() {
                     className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#0d4f4c] focus:border-transparent outline-none"
                   />
                 </div>
+
+                {/* BOTONES EXPORTAR */}
+                <div className="flex flex-wrap gap-3 mt-4">
+                  <button
+                    onClick={exportToExcel}
+                    className="px-4 py-2 bg-green-600 text-white rounded-lg hover:bg-green-700 transition"
+                  >
+                    Exportar Excel
+                  </button>
+
+                  <button
+                    onClick={exportToPDF}
+                    className="px-4 py-2 bg-red-600 text-white rounded-lg hover:bg-red-700 transition"
+                  >
+                    Exportar PDF
+                  </button>
+                </div>
+
               </div>
 
-              {/* Estadísticas rápidas */}
+              {/* Estadísticas Rápidas */}
               <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mt-6">
                 <div className="bg-blue-50 p-4 rounded-lg">
                   <p className="text-sm text-gray-600">Total Usuarios</p>
@@ -238,7 +292,7 @@ export default function UserHistory() {
               </div>
             </div>
 
-            {/* Tabla de Usuarios - Desktop */}
+            {/* Tabla Desktop */}
             <div className="hidden md:block bg-white rounded-lg shadow-md overflow-hidden">
               <div className="overflow-x-auto">
                 <table className="w-full">
@@ -257,9 +311,7 @@ export default function UserHistory() {
                     {filteredUsers.length > 0 ? (
                       filteredUsers.map((user) => (
                         <tr key={user.id} className="hover:bg-gray-50 transition-colors">
-                          <td className="px-6 py-4 text-sm font-medium text-gray-900">
-                            {user.nombre}
-                          </td>
+                          <td className="px-6 py-4 text-sm font-medium text-gray-900">{user.nombre}</td>
                           <td className="px-6 py-4 text-sm text-gray-600">{user.email}</td>
                           <td className="px-6 py-4">
                             <div className="flex flex-wrap gap-1">
@@ -289,18 +341,23 @@ export default function UserHistory() {
                               )}
                             </div>
                           </td>
+
                           <td className="px-6 py-4 text-sm text-gray-600">
                             {formatearFecha(user.horaEntrada)}
                           </td>
+
                           <td className="px-6 py-4 text-sm text-gray-600">
-                            {user.horaSalida ? formatearFecha(user.horaSalida) : 
-                              <span className="text-green-600 font-medium">En sesión</span>}
+                            {user.horaSalida ? formatearFecha(user.horaSalida) : (
+                              <span className="text-green-600 font-medium">En sesión</span>
+                            )}
                           </td>
+
                           <td className="px-6 py-4 text-sm font-medium">
                             <span className={user.estadoSesion === "Activa" ? "text-green-600 font-semibold" : "text-gray-900"}>
                               {user.duracionSesion}
                             </span>
                           </td>
+
                           <td className="px-6 py-4">
                             <span className={`px-3 py-1 rounded-full text-xs font-semibold ${
                               user.estadoSesion === "Activa"
@@ -324,7 +381,7 @@ export default function UserHistory() {
               </div>
             </div>
 
-            {/* Cards de Usuarios - Mobile */}
+            {/* Cards Mobile */}
             <div className="md:hidden space-y-4">
               {filteredUsers.length > 0 ? (
                 filteredUsers.map((user) => (
@@ -373,19 +430,23 @@ export default function UserHistory() {
                           )}
                         </div>
                       </div>
+
                       <div className="flex justify-between">
                         <span className="text-gray-600">Hora Entrada:</span>
                         <span className="font-medium text-xs">
                           {formatearFecha(user.horaEntrada)}
                         </span>
                       </div>
+
                       <div className="flex justify-between">
                         <span className="text-gray-600">Hora Salida:</span>
                         <span className="font-medium text-xs">
-                          {user.horaSalida ? formatearFecha(user.horaSalida) : 
-                            <span className="text-green-600">En sesión</span>}
+                          {user.horaSalida ? formatearFecha(user.horaSalida) : (
+                            <span className="text-green-600">En sesión</span>
+                          )}
                         </span>
                       </div>
+
                       <div className="flex justify-between">
                         <span className="text-gray-600">Duración:</span>
                         <span className={`font-medium ${user.estadoSesion === "Activa" ? "text-green-600" : ""}`}>
